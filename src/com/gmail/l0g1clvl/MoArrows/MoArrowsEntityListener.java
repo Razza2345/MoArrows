@@ -1,6 +1,7 @@
 package com.gmail.l0g1clvl.MoArrows;
 
 import java.util.List;
+import org.bukkit.configuration.file.FileConfiguration;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -19,6 +20,7 @@ import com.gmail.l0g1clvl.MoArrows.arrows.TimedArrowEffect;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Random;
 /**
@@ -26,7 +28,7 @@ import java.util.Random;
  * @author MrAverage with code from ayan4m1
  */
 
-public class MoArrowsEntityListener implements Listener {
+public class MoArrowsEntityListener extends JavaPlugin implements Listener {
 	private MoArrows plugin;
 	public static double damageMultiplier;
 
@@ -97,6 +99,10 @@ public class MoArrowsEntityListener implements Listener {
 					}
 
 					arrowEffect.onGroundHitEvent(arrow);
+					
+//					if (plugin.config.getArrowRemove(arrowType)) {
+//						arrow.remove();
+//					}
 
 //					if (arrowEffect instanceof TimedArrowEffect) {
 //						TimedArrowEffect timedArrowEffect = (TimedArrowEffect)arrowEffect;
@@ -148,6 +154,10 @@ public class MoArrowsEntityListener implements Listener {
 				}
 
 				arrowEffect.onEntityHitEvent(arrow, event.getEntity());
+				
+//				if (plugin.config.getArrowRemove(arrowType)) {
+//					arrow.remove();
+//				}
 				
 		}
 		
@@ -236,6 +246,10 @@ public class MoArrowsEntityListener implements Listener {
 		}
 		
 		event.setDamage((int)Math.floor(damageMultiplier));
+		
+		List<String> arrows = getConfig().getStringList("remove-arrows");
+        for (String s : arrows)
+        	plugin.log.info("contains: " + s);
 		//plugin.log.info("Final damage: " + damageMultiplier + " rounded to " + (int)Math.floor(damageMultiplier));
 		
 		

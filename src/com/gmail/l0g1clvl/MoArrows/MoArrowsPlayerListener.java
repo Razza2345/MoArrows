@@ -1,6 +1,8 @@
 package com.gmail.l0g1clvl.MoArrows;
 
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.file.FileConfiguration;
+import java.util.List;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Entity;
@@ -14,10 +16,12 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.material.MaterialData;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import com.gmail.l0g1clvl.MoArrows.arrows.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.plugin.java.JavaPlugin;
 
 /**
  * Changes arrow types, fires arrows
@@ -27,13 +31,14 @@ public class MoArrowsPlayerListener implements Listener {
 	private MoArrows plugin;
 
 	public void onPlayerQuit(PlayerQuitEvent event) {
-		if (plugin.activeArrowType.containsKey(event.getPlayer().getName())) {
-			plugin.activeArrowType.remove(event.getPlayer().getName());
+		if (plugin.activeArrowType.containsKey(event.getPlayer())) {
+			plugin.activeArrowType.remove(event.getPlayer());
 		}
 	}
 
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent event) {
+		String message = " ";
 		Player player = event.getPlayer();
 		if (player.getItemInHand().getType() == Material.BOW) {
 			if (event.getAction() == Action.RIGHT_CLICK_AIR	|| event.getAction() == Action.RIGHT_CLICK_BLOCK) {
@@ -85,39 +90,64 @@ public class MoArrowsPlayerListener implements Listener {
 				
 			} else if (event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK) {
 				if (plugin.activeArrowType.containsKey(player)) {
-					// Get the currently selected arrow type for our player
 					int arrowTypeIndex = plugin.activeArrowType.get(player).ordinal();
-					// If player can use all arrow types, select next type
-					if (player.hasPermission("multiarrow.use.all")) {
-						arrowTypeIndex = this.nextArrowIndex(arrowTypeIndex, player.isSneaking());
+					if (!player.isSneaking()) {
+						if (arrowTypeIndex == ArrowType.values().length - 1) {
+							arrowTypeIndex = 0;
+						} else {
+							arrowTypeIndex++;
+						}
 					} else {
-						//Start with the next arrow type
-						int initialIndex = arrowTypeIndex;
-						arrowTypeIndex = this.nextArrowIndex(arrowTypeIndex, player.isSneaking());
-
-						//Search for a valid type until looped around
-						while (arrowTypeIndex != initialIndex) {
-							String permissionNode = "multiarrow.use." + ArrowType.values()[arrowTypeIndex].toString().toLowerCase();
-							if (player.hasPermission(permissionNode)) {
-								break;
-							}
-
-							if (player.isSneaking()) {
-								if (arrowTypeIndex == 0) {
-									arrowTypeIndex = ArrowType.values().length - 1;
-								} else {
-									arrowTypeIndex--;
-								}
-							} else {
-								if (arrowTypeIndex == ArrowType.values().length - 1) {
-									arrowTypeIndex = 0;
-									break;
-								} else {
-									arrowTypeIndex++;
-								}
-							}
+						if (arrowTypeIndex == 0) {
+							arrowTypeIndex = ArrowType.values().length - 1;
+						} else {
+							arrowTypeIndex--;
 						}
 					}
+					plugin.activeArrowType.put(player, ArrowType.values()[arrowTypeIndex]);
+					if (player.hasPermission("multiarrow.use.all")) {
+						
+						if (!player.isSneaking()) {
+							if (!plugin.removedArrows.contains(plugin.activeArrowType.get(player).toString().toLowerCase())) {
+								arrowTypeIndex = plugin.activeArrowType.get(player).ordinal();
+							} else {
+								arrowTypeIndex = plugin.activeArrowType.get(player).ordinal() + 1;
+							}
+						} else {
+							if (!plugin.removedArrows.contains(plugin.activeArrowType.get(player).toString().toLowerCase())) {
+								arrowTypeIndex = plugin.activeArrowType.get(player).ordinal();
+							} else {
+								arrowTypeIndex = plugin.activeArrowType.get(player).ordinal() - 1;
+							}
+						}
+						
+						
+						//arrowTypeIndex = this.nextArrowIndex(arrowTypeIndex, player.isSneaking());
+					} //else {
+//						int initialIndex = arrowTypeIndex;
+//						arrowTypeIndex = this.nextArrowIndex(arrowTypeIndex, player.isSneaking());
+//						while (arrowTypeIndex != initialIndex) {
+//							String permissionNode = "multiarrow.use." + ArrowType.values()[arrowTypeIndex].toString().toLowerCase();
+//							if (player.hasPermission(permissionNode)) {
+//								break;
+//							}
+//
+//							if (player.isSneaking()) {
+//								if (arrowTypeIndex == 0) {
+//									arrowTypeIndex = ArrowType.values().length - 1;
+//								} else {
+//									arrowTypeIndex--;
+//								}
+//							} else {
+//								if (arrowTypeIndex == ArrowType.values().length - 1) {
+//									arrowTypeIndex = 0;
+//									break;
+//								} else {
+//									arrowTypeIndex++;
+//								}
+//							}
+//						}
+//					}
 
 					plugin.activeArrowType.put(player, ArrowType.values()[arrowTypeIndex]);
 				} else {
@@ -126,34 +156,36 @@ public class MoArrowsPlayerListener implements Listener {
 
 				ArrowType arrowType = plugin.activeArrowType.get(player);
 //				Double arrowFee = plugin.config.getArrowFee(arrowType);
-				String message = ChatColor.BLUE + "You select " + arrowType.toString() + " arrows.";
+				
+				message = ChatColor.BLUE + "You select " + plugin.activeArrowType.get(player).toString() + " arrows.";
 //				if (plugin.iconomy != null && arrowFee > 0D) {
 //					message += " (" + iConomy.format(arrowFee) + ")";
 //				}
-
+		//		if (!plugin.removedArrows.contains(arrowType.toString().toLowerCase())) {
 				player.sendMessage(message);
+				}
 			}
 		}
-	}
+	
 
-	@EventHandler
-	private int nextArrowIndex(int startIndex, boolean isSneaking) {
-		int currentIndex = startIndex;
-		if (isSneaking) {
-			if (currentIndex == 0) {
-				currentIndex = ArrowType.values().length - 1;
-			} else {
-				currentIndex--;
-			}
-		} else {
-			if (currentIndex == ArrowType.values().length - 1) {
-				currentIndex = 0;
-			} else {
-				currentIndex++;
-			}
-		}
-		return currentIndex;
-	}
+//	@EventHandler
+//	private int nextArrowIndex(int startIndex, boolean isSneaking) {
+//		int currentIndex = startIndex;
+//		if (isSneaking) {
+//			if (currentIndex == 0) {
+//				currentIndex = ArrowType.values().length - 1;
+//			} else {
+//				currentIndex--;
+//			}
+//		} else {
+//			if (currentIndex == ArrowType.values().length - 1) {
+//				currentIndex = 0;
+//			} else {
+//				currentIndex++;
+//			}
+//		}
+//		return currentIndex;
+//	}
 	
 	@EventHandler
     public void playerBowShoot(EntityShootBowEvent e) {
@@ -162,9 +194,7 @@ public class MoArrowsPlayerListener implements Listener {
         Entity entity = e.getEntity();
         Float speed = e.getForce();
         Entity arrow = e.getProjectile();
-        
-        
-        
+              
     }
 }
 
