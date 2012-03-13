@@ -1,5 +1,6 @@
 package com.gmail.l0g1clvl.MoArrows;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -15,7 +16,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 import com.gmail.l0g1clvl.MoArrows.arrows.ArrowType;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.util.List;
 
@@ -27,8 +27,20 @@ public class MoArrows extends JavaPlugin {
 
     public static Logger log;
     public static Map<Player, ArrowType> activeArrowType;
-    public FileConfiguration maConfig;
-    public static Set <String> removedArrows;
+    public ConfigHandler config;
+    public static String[] arrowID;
+    
+    
+    //configuration variables
+    public static List <String> removedArrows;
+    public static double baseDamageMultiplier;
+    public static double baseCritMultiplier;
+    public static double baseMassiveMultiplier;
+    public static double baseCrouchMultiplier;
+    public static double baseArmorPenalyty[];
+    public static String poisonMaterials, explosiveMaterials, lightningMaterials, teleportMaterials, torchMaterials, waterMaterials, drillMaterials, animalMaterials;
+    public static boolean allowCrits, allowArmorPenalty, needMaterials;
+   
 
 	public MoArrows() {
 		this.log = Logger.getLogger("minecraft");
@@ -40,21 +52,34 @@ public class MoArrows extends JavaPlugin {
 	}
 
 	public void onEnable() {
-//		this.config = new ConfigHandler(this);
+		 arrowID = new String[100];
+		 for (int i=0;i<100;i++) {
+			 arrowID[i] = "";
+		 }
+		
+		this.config = new ConfigHandler(this);
 		getServer().getPluginManager().registerEvents(new MoArrowsPlayerListener(), this);
 		getServer().getPluginManager().registerEvents(new MoArrowsEntityListener(), this);
 		getServer().getPluginManager().registerEvents(new MoArrowsServerListener(), this);
         
-        maConfig = getConfig();
-        
-          if (maConfig.isConfigurationSection("remove-arrows")) {
-        	  removedArrows = maConfig.getConfigurationSection("remove-arrows").getKeys(false);
-          }
-          log.info("keys: " + removedArrows);
+		//gather list of removed arrows
+        removedArrows = getConfig().getStringList("remove-arrows");
+        log.info("[MoArrows] Removed the following arrows: " + removedArrows);
+		log.info("[MoArrows] MoArrows v0.1.2 enabled!");
 		
-		PluginDescriptionFile pdfFile = this.getDescription();
-		log.info(pdfFile.getName() + " v" + pdfFile.getVersion() + " enabled!");
-	
+		baseDamageMultiplier = getConfig().getDouble("base-damage");
+		baseCrouchMultiplier = getConfig().getDouble("crouch-damage");
+		allowCrits = getConfig().getBoolean("allow-crit");
+		needMaterials = getConfig().getBoolean("need-materials");
+		allowArmorPenalty = getConfig().getBoolean("allow-penalty");
+		baseCritMultiplier = getConfig().getDouble("base-crit");
+		baseMassiveMultiplier = getConfig().getDouble("base-massive");
+//		poisonMaterials = getConfig().getString("poison-materials");
+//		drillMaterials = getConfig().getString("poison-materials");
+//		explosiveMaterials = getConfig().getString("poison-materials");
+//		teleportMaterials = getConfig().getString("poison-materials");
+//		lightningMaterials = getConfig().getString("poison-materials");
+//		animalMaterials = getConfig().getString("poison-materials");
 	}
 
 	public void onDisable() {

@@ -28,6 +28,7 @@ import org.bukkit.plugin.java.JavaPlugin;
  * @author MrAverage with code from ayan4m1
  */
 public class MoArrowsPlayerListener implements Listener {
+	
 	private MoArrows plugin;
 
 	public void onPlayerQuit(PlayerQuitEvent event) {
@@ -49,6 +50,7 @@ public class MoArrowsPlayerListener implements Listener {
 				}
 
 				ArrowType arrowType = plugin.activeArrowType.get(player);
+				
 //				MaterialData arrowMaterial = plugin.config.getReqdMaterialData(arrowType);
 
 //				PlayerInventory inventory = player.getInventory();
@@ -83,89 +85,47 @@ public class MoArrowsPlayerListener implements Listener {
 //						return;
 //					}
 //				}
-//
-//				//HACK: Without this the arrow count does not update correctly
-//				player.updateInventory();
-
 				
 			} else if (event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK) {
+				
 				if (plugin.activeArrowType.containsKey(player)) {
 					int arrowTypeIndex = plugin.activeArrowType.get(player).ordinal();
-					if (!player.isSneaking()) {
-						if (arrowTypeIndex == ArrowType.values().length - 1) {
-							arrowTypeIndex = 0;
-						} else {
-							arrowTypeIndex++;
-						}
-					} else {
-						if (arrowTypeIndex == 0) {
-							arrowTypeIndex = ArrowType.values().length - 1;
-						} else {
-							arrowTypeIndex--;
-						}
-					}
-					plugin.activeArrowType.put(player, ArrowType.values()[arrowTypeIndex]);
-					if (player.hasPermission("multiarrow.use.all")) {
+					
+					do {
 						
 						if (!player.isSneaking()) {
-							if (!plugin.removedArrows.contains(plugin.activeArrowType.get(player).toString().toLowerCase())) {
-								arrowTypeIndex = plugin.activeArrowType.get(player).ordinal();
+							if (arrowTypeIndex == ArrowType.values().length - 1) {
+								arrowTypeIndex = 0;
 							} else {
-								arrowTypeIndex = plugin.activeArrowType.get(player).ordinal() + 1;
+								arrowTypeIndex++;
 							}
 						} else {
-							if (!plugin.removedArrows.contains(plugin.activeArrowType.get(player).toString().toLowerCase())) {
-								arrowTypeIndex = plugin.activeArrowType.get(player).ordinal();
+							if (arrowTypeIndex == 0) {
+								arrowTypeIndex = ArrowType.values().length - 1;
 							} else {
-								arrowTypeIndex = plugin.activeArrowType.get(player).ordinal() - 1;
+								arrowTypeIndex--;
 							}
-						}
+						} 
 						
-						
-						//arrowTypeIndex = this.nextArrowIndex(arrowTypeIndex, player.isSneaking());
-					} //else {
-//						int initialIndex = arrowTypeIndex;
-//						arrowTypeIndex = this.nextArrowIndex(arrowTypeIndex, player.isSneaking());
-//						while (arrowTypeIndex != initialIndex) {
-//							String permissionNode = "multiarrow.use." + ArrowType.values()[arrowTypeIndex].toString().toLowerCase();
-//							if (player.hasPermission(permissionNode)) {
-//								break;
-//							}
-//
-//							if (player.isSneaking()) {
-//								if (arrowTypeIndex == 0) {
-//									arrowTypeIndex = ArrowType.values().length - 1;
-//								} else {
-//									arrowTypeIndex--;
-//								}
-//							} else {
-//								if (arrowTypeIndex == ArrowType.values().length - 1) {
-//									arrowTypeIndex = 0;
-//									break;
-//								} else {
-//									arrowTypeIndex++;
-//								}
-//							}
-//						}
-//					}
+						plugin.activeArrowType.put(player, ArrowType.values()[arrowTypeIndex]);
+					
+					} while (plugin.removedArrows.contains(plugin.activeArrowType.get(player).toString().toLowerCase()));
+					
 
-					plugin.activeArrowType.put(player, ArrowType.values()[arrowTypeIndex]);
 				} else {
 					plugin.activeArrowType.put(player, ArrowType.Normal);
 				}
 
-				ArrowType arrowType = plugin.activeArrowType.get(player);
-//				Double arrowFee = plugin.config.getArrowFee(arrowType);
-				
-				message = ChatColor.BLUE + "You select " + plugin.activeArrowType.get(player).toString() + " arrows.";
-//				if (plugin.iconomy != null && arrowFee > 0D) {
-//					message += " (" + iConomy.format(arrowFee) + ")";
-//				}
-		//		if (!plugin.removedArrows.contains(arrowType.toString().toLowerCase())) {
-				player.sendMessage(message);
-				}
+			ArrowType arrowType = plugin.activeArrowType.get(player);
+			message = ChatColor.BLUE + "You select " + plugin.activeArrowType.get(player).toString() + " arrows.";
+			player.sendMessage(message);
+//			Double arrowFee = plugin.config.getArrowFee(arrowType);
+//			if (plugin.iconomy != null && arrowFee > 0D) {
+//				message += " (" + iConomy.format(arrowFee) + ")";
+//			}
 			}
 		}
+	}
 	
 
 //	@EventHandler
@@ -194,6 +154,79 @@ public class MoArrowsPlayerListener implements Listener {
         Entity entity = e.getEntity();
         Float speed = e.getForce();
         Entity arrow = e.getProjectile();
+        
+        //associate a custom ID to an arrow entity with a specific arrow type
+        Player player = (Player) entity;
+        int arrowNum = e.getProjectile().getEntityId();
+        for (int j = 0; j < 100; j ++) {
+        	if (plugin.arrowID[j] == "") {
+        		plugin.arrowID[j] = "" + arrowNum + "." + plugin.activeArrowType.get(player);
+    	        //plugin.log.info(plugin.arrowID[j]);
+    	        break;
+        	} 
+        }
+        
+//-------------------------------CHECK FOR MATERIALS---------------------------------
+        
+//        if (plugin.needMaterials) {
+//        	String materialsNeeded = "";
+//        	switch (plugin.activeArrowType.get(player)) {
+//        		case Poison:materialsNeeded = plugin.poisonMaterials;
+//        			break;
+//        		case Water:materialsNeeded = plugin.waterMaterials;
+//    				break;
+//        		case Torch:materialsNeeded = plugin.torchMaterials;
+//    				break;
+//        		case Animal:materialsNeeded = plugin.animalMaterials;
+//    				break;
+//        		case Explosive:materialsNeeded = plugin.explosiveMaterials;
+//        			player.sendMessage("bingo");
+//    				break;
+//        		case Lightning:materialsNeeded = plugin.lightningMaterials;
+//    				break;
+//        		case Drill:materialsNeeded = plugin.drillMaterials;
+//    				break;
+//        		case Teleport:materialsNeeded = plugin.teleportMaterials;
+//    				break;
+//    			default:materialsNeeded = "";
+//        	}
+//        	
+//        	String delim = "[:,]+";
+//        	Boolean hasMaterials = false;
+//			String parse1[] = materialsNeeded.split(delim);
+//			int parse2[] = new int[20];
+//			int item=0, amount=0;
+//			PlayerInventory inventory = player.getInventory();
+//
+//			for (int k=0;k<parse1.length-1; k++) {
+//				parse2[k] = Integer.parseInt(parse1[k]);
+//			}
+//			
+//			for (int k=0;k<parse2.length-1; k++) {
+//				ItemStack reqMats = new ItemStack(parse2[k],parse2[k+1]);
+//				if (inventory.contains(reqMats)) {
+//					player.sendMessage("pass");
+//					hasMaterials = true;
+//					k++;
+//				} else {
+//					hasMaterials = false;
+//					player.sendMessage("fail");
+//					inventory.addItem(reqMats);
+//					break;
+//				}
+//			}
+			//He's got the stuff, so remove it..
+//			for (int k=0;k<parse2.length; k++) {
+//				if (hasMaterials) {
+//					player.getInventory().removeItem(new ItemStack(Integer.parseInt(parse1[k]),Integer.parseInt(parse1[k+1])));
+//					k++;
+//				} else {
+//					player.sendMessage("You don't have enough materials.");
+//					break;
+//				}
+//			}
+//			
+//        }
               
     }
 }

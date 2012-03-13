@@ -22,7 +22,7 @@ import com.gmail.l0g1clvl.MoArrows.arrows.ArrowType;
 public class ConfigHandler {
 	private MoArrows plugin;
 	private LinkedHashMap<String, LinkedHashMap> data;
-	private final String defaultConfigFile = "materials:\nremove-arrows:\nfees:\noptions:\n    send-balance-on-fee: true";
+	private String defaultConfigFile;
 
 //	public Object getOptionValue(String key) {
 //		if (data.containsKey("options")) {
@@ -106,6 +106,28 @@ public class ConfigHandler {
 
 	public ConfigHandler(MoArrows instance) {
 		this.plugin = instance;
+		
+		defaultConfigFile = "# Uncomment arrow types below to remove them from your ";
+		defaultConfigFile += "server\nremove-arrows:\n#    - water\n#    - teleport\n#";
+		defaultConfigFile += "    - poison\n#    - explosive\n#    - drill\n#    - animal\n#";
+		defaultConfigFile += "    - torch\n\n# Increase or decrease total bow damage by ";
+		defaultConfigFile += "changing this multiplier\nbase-damage: 1.0\n# Increase or ";
+		defaultConfigFile += "decrease crouch damage by changing this multiplier\n";
+		defaultConfigFile += "crouch-damage: 1.2\n# Turn crits on or off and set their ";
+		defaultConfigFile += "damage multipliers here\nallow-crit: true\nbase-crit: ";
+		defaultConfigFile += "2.0\nbase-massive: 4.0\n# Turn on or off the armor ";
+		defaultConfigFile += "penalties\nallow-penalty: true\n\n# The following are not";
+		defaultConfigFile += "implemented yet\n\n# Change armor penalties below as ";
+		defaultConfigFile += "follows:\n# Usage:\n#[armor type]:\n#    - [decimal head]";
+		defaultConfigFile += "\n#    - [decimal chest]\n#    - [decimal legs]\n#    - ";
+		defaultConfigFile += "[decimal boots]\n# All values will add up to have a final ";
+		defaultConfigFile += "damage reduction multiplier.\n# For example, if you want ";
+		defaultConfigFile += "the total bow damage dealt for a full diamond armor\n# set ";
+		defaultConfigFile += "to be divided by 1.9, do the following:# Example: \n#diamond:";
+		defaultConfigFile += "\n#    - 0.4\n#    - 0.5\n#    - 0.6\n#    - 0.4\n\n";
+		defaultConfigFile += "#materials:\n#fees:\n#options:\n#    send-balance-on-fee: ";
+		defaultConfigFile += "true";
+		
 		if (this.createDataDirectory()) {
 			Yaml yaml = new Yaml();
 			File configFile = new File(plugin.getDataFolder().getAbsolutePath() + File.separator + "config.yml");

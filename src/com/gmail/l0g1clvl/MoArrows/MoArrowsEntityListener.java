@@ -31,6 +31,7 @@ import java.util.Random;
 public class MoArrowsEntityListener extends JavaPlugin implements Listener {
 	private MoArrows plugin;
 	public static double damageMultiplier;
+	public String sendToArrow;
 
 //	public boolean chargeFee(Player player, ArrowType type) {
 //		Double arrowFee = plugin.config.getArrowFee(type);
@@ -57,21 +58,41 @@ public class MoArrowsEntityListener extends JavaPlugin implements Listener {
 //			return true;
 //		} else return true;
 //	}
-	
 
 	@EventHandler
 	public void onProjectileHit(ProjectileHitEvent event) {
+		
+		//Need this in BOTH onProjectileHit AND onEntityDamage
+		sendToArrow = "";
+		ArrowType arrowType = ArrowType.Normal;
+
 		if (!(event.getEntity() instanceof Arrow)) {
 			return;
 		}
 
 		Arrow arrow = (Arrow)event.getEntity();
+		//plugin.log.info("arrow = " + event.getEntity().getEntityId());
 		if (!(arrow.getShooter() instanceof Player)) {
 			return;
 		}
-
-		ArrowType arrowType = plugin.activeArrowType.get(((Player)arrow.getShooter()));
-
+	
+		//Checks arrowID list for fired arrows, then assigns type
+		//based on the arrows unique ID.
+		for (int i = 0; i < plugin.arrowID.length; i++) {
+			if (plugin.arrowID[i].contains("" + event.getEntity().getEntityId())) {
+				String delim = "[.]";
+				String parse[] = plugin.arrowID[i].split(delim);
+				//plugin.log.info("deliminator = " + parse[parse.length-1]);
+				sendToArrow = parse[parse.length-1];
+				plugin.arrowID[i] = "";
+			}
+		}
+		//This removes server errors for arrows falling as 
+		//a result of block desruction.
+		if (sendToArrow != "") {
+			arrowType = ArrowType.valueOf(sendToArrow);
+		}
+		
 		//We should ignore this event if there is a targetable entity within one block
 		List<Entity> entities = arrow.getNearbyEntities(1D, 1D, 1D);
 		int entCount = entities.size();
@@ -100,14 +121,10 @@ public class MoArrowsEntityListener extends JavaPlugin implements Listener {
 
 					arrowEffect.onGroundHitEvent(arrow);
 					
-//					if (plugin.config.getArrowRemove(arrowType)) {
-//						arrow.remove();
-//					}
-
 //					if (arrowEffect instanceof TimedArrowEffect) {
 //						TimedArrowEffect timedArrowEffect = (TimedArrowEffect)arrowEffect;
 //						plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, timedArrowEffect.getDelayTriggerRunnable(arrow), timedArrowEffect.getDelayTicks());
-					//}
+//					}
 				}
 			}
 		}
@@ -115,6 +132,11 @@ public class MoArrowsEntityListener extends JavaPlugin implements Listener {
 
 	@EventHandler
 	public void onEntityDamage(EntityDamageEvent event) {
+		
+		//Need this in BOTH onProjectileHit AND onEntityDamage
+				sendToArrow = "";
+				ArrowType arrowType = ArrowType.Normal;
+				
 		if (event.getCause() != EntityDamageEvent.DamageCause.PROJECTILE) {
 			return;
 		}
@@ -132,8 +154,23 @@ public class MoArrowsEntityListener extends JavaPlugin implements Listener {
 		if (!(arrow.getShooter() instanceof Player)) {
 			return;
 		}
-
-		ArrowType arrowType = plugin.activeArrowType.get(((Player)arrow.getShooter()));
+		
+		//Checks arrowID list for fired arrows, then assigns type
+		//based on the arrows unique ID.
+		for (int i = 0; i < plugin.arrowID.length; i++) {
+			if (plugin.arrowID[i].contains("" + event.getEntity().getEntityId())) {
+				String delim = "[.]";
+				String parse[] = plugin.arrowID[i].split(delim);
+				//plugin.log.info("deliminator = " + parse[parse.length-1]);
+				sendToArrow = parse[parse.length-1];
+				plugin.arrowID[i] = "";
+			}
+		}
+		//This removes server errors for arrows falling as 
+		//a result of block desruction.
+		if (sendToArrow != "") {
+			arrowType = ArrowType.valueOf(sendToArrow);
+		}
 
 		if (arrowType != ArrowType.Normal) {
 			if (arrowType == ArrowType.Poison) {
@@ -154,11 +191,7 @@ public class MoArrowsEntityListener extends JavaPlugin implements Listener {
 				}
 
 				arrowEffect.onEntityHitEvent(arrow, event.getEntity());
-				
-//				if (plugin.config.getArrowRemove(arrowType)) {
-//					arrow.remove();
-//				}
-				
+			
 		}
 		
 //------------------------BEGIN "ARMOR PENALTY" CODE--------------------------
@@ -216,8 +249,6 @@ public class MoArrowsEntityListener extends JavaPlugin implements Listener {
 			damageReduction += 0.2;
 		}
 		
-
-		
 //------------------------BEGIN "MASSIVE CRITICALS" CODE--------------------------
 		
 		//plugin.log.info("Initial damage: " + String.valueOf(event.getDamage()));
@@ -231,25 +262,22 @@ public class MoArrowsEntityListener extends JavaPlugin implements Listener {
 		
 		if (player.isSneaking()) {
 			if (critNum >= 0 && critNum <=7) { 		//8% chance for regular crit
-				damageMultiplier = (event.getDamage()*(2))/damageReduction;
+				damageMultiplier = ((event.getDamage()*plugin.baseCritMultiplier)/damageReduction)*plugin.baseDamageMultiplier;
 				player.sendMessage(ChatColor.YELLOW + "Critical hit!");
 			} else {
-				damageMultiplier = (event.getDamage()*(1.2))/damageReduction;
+				damageMultiplier = ((event.getDamage()*plugin.baseCrouchMultiplier)/damageReduction)*plugin.baseDamageMultiplier;
 			}
 		} else {
 			if (critNum == 7 || critNum == 77) {	//2% chance for massive crit
-				damageMultiplier = (event.getDamage()*(4))/damageReduction;
+				damageMultiplier = ((event.getDamage()*plugin.baseMassiveMultiplier)/damageReduction)*plugin.baseDamageMultiplier;
 				player.sendMessage(ChatColor.RED + "MASSIVE CRIT!");
 			} else {
-				damageMultiplier = (event.getDamage())/damageReduction;
+				damageMultiplier = ((event.getDamage())/damageReduction)*plugin.baseDamageMultiplier;
 			}
 		}
 		
 		event.setDamage((int)Math.floor(damageMultiplier));
-		
-		List<String> arrows = getConfig().getStringList("remove-arrows");
-        for (String s : arrows)
-        	plugin.log.info("contains: " + s);
+	
 		//plugin.log.info("Final damage: " + damageMultiplier + " rounded to " + (int)Math.floor(damageMultiplier));
 		
 		

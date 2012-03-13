@@ -1,0 +1,20 @@
+name: MoArrows
+main: com.gmail.l0g1clvl.MoArrows.MoArrows
+author: MrAverage with code samples from ayan4m1
+version: 0.1.2
+permissions:
+    multiarrow.use.all:
+        default: op
+        description: Allows use of all arrow types
+    multiarrow.use.normal:
+        default: true
+        description: Allows use of normal arrows
+    multiarrow.free-fees:
+        default: true
+        description: Bypass iConomy fee cost
+    multiarrow.free-materials:
+        default: op
+        description: Bypass extra materials cost
+    multiarrow.infinite:
+        default: false
+        description: Will not not consume arrows when firing

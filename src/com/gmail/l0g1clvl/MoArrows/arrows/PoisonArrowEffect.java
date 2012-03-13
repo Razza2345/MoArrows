@@ -13,7 +13,7 @@ public class PoisonArrowEffect implements ArrowEffect {
 	
 	public void onEntityHitEvent(Arrow arrow, Entity target) {
 		LivingEntity e = (LivingEntity) target;
-		e.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 200, 4));
+		e.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 200, 1));
 	}
 
 	public void onGroundHitEvent(Arrow arrow) {
