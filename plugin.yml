@@ -1,20 +1,44 @@
 name: MoArrows
 main: com.gmail.l0g1clvl.MoArrows.MoArrows
-author: MrAverage with code samples from ayan4m1
-version: 0.1.2
+author: MrAverage
+version: 0.7.0
 permissions:
-    multiarrow.use.all:
+    moarrows.use.all:
         default: op
         description: Allows use of all arrow types
-    multiarrow.use.normal:
+    moarrows.use.normal:
         default: true
         description: Allows use of normal arrows
-    multiarrow.free-fees:
+    moarrows.use.explosive:
+        default: true
+        description: Allows use of this special arrows
+    moarrows.use.lightning:
+        default: true
+        description: Allows use of this special arrows
+    moarrows.use.water:
+        default: true
+        description: Allows use of this special arrows
+    moarrows.use.poison:
+        default: true
+        description: Allows use of this special arrows
+    moarrows.use.drill:
+        default: true
+        description: Allows use of this special arrows
+    moarrows.use.torch:
+        default: true
+        description: Allows use of this special arrows
+    moarrows.use.animal:
+        default: true
+        description: Allows use of this special arrows
+    moarrows.use.teleport:
+        default: true
+        description: Allows use of this special arrows
+    moarrows.free-fees:
         default: true
         description: Bypass iConomy fee cost
-    multiarrow.free-materials:
+    moarrows.free-materials:
         default: op
         description: Bypass extra materials cost
-    multiarrow.infinite:
+    moarrows.infinite:
         default: false
         description: Will not not consume arrows when firing

@@ -9,7 +9,7 @@ import org.bukkit.util.Vector;
 
 import com.gmail.l0g1clvl.MoArrows.MoArrows;
 
-public class WaterArrowEffect implements TimedArrowEffect {
+public class WaterArrowEffect implements ArrowEffect {
 	private MoArrows plugin;
 	
 	public void onEntityHitEvent(Arrow arrow, Entity target) {
@@ -18,12 +18,6 @@ public class WaterArrowEffect implements TimedArrowEffect {
 
 	public void onGroundHitEvent(final Arrow arrow) {
 		this.setToWater(arrow, 1);
-		
-//		plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-//            public void run() {
-//                plugin.log.info("running");
-//            }
-//        }, 3 * 20L); // 20 ticks = 1 second. So 3*20 ticks = 3 seconds.
 		
 	}
 

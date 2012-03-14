@@ -21,14 +21,6 @@ public class ExplosiveArrowEffect implements ArrowEffect {
 		Location loc = arrow.getLocation();
 		arrow.getWorld().createExplosion(loc, 2);
 		
-//		Player player = (Player) arrow.getShooter();
-//		if (player.getInventory().contains(1)) {
-//			player.sendMessage("removed 1");
-//			player.getInventory().removeItem(new ItemStack(1,1));
-//		} else {
-//			player.sendMessage("removed 0");
-//		}
-		
 	}
 		
 }
