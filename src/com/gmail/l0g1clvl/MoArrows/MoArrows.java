@@ -5,10 +5,14 @@ import java.util.Map;
 import java.util.logging.Logger;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.PluginManager;
 import com.gmail.l0g1clvl.MoArrows.arrows.ArrowType;
+import com.sk89q.worldedit.Location;
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+
 import org.bukkit.configuration.file.FileConfiguration;
 import java.util.List;
 
@@ -24,6 +28,7 @@ public class MoArrows extends JavaPlugin {
     public ConfigHandler config;
     public MaterialHandler materials;
     public static String[] arrowID;
+    public static Plugin wgPlugin;
     
     //configuration variables
     public static List <String> removedArrows;
@@ -35,8 +40,7 @@ public class MoArrows extends JavaPlugin {
     public static double baseCrouchMultiplier;
     public static double baseArmorPenalyty[];
     public static boolean allowCrits, allowArmorPenalty;
-   
-
+    
 	public MoArrows() {
 		this.log = Logger.getLogger("minecraft");
 		this.activeArrowType = new HashMap<Player, ArrowType>();
@@ -65,6 +69,10 @@ public class MoArrows extends JavaPlugin {
 		baseCritMultiplier = getConfig().getDouble("base-crit");
 		baseCritChance = getConfig().getDouble("base-crit-chance");
 		baseMassiveChance = getConfig().getDouble("base-massive-chance");
+		
+		//hook WorldGuard
+		Plugin plugin = getServer().getPluginManager().getPlugin("WorldGuard");
+		wgPlugin = getServer().getPluginManager().getPlugin("WorldGuard");
 		
 	}
 

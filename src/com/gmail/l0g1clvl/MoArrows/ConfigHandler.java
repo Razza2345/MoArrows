@@ -13,11 +13,11 @@ import org.yaml.snakeyaml.*;
  */
 
 public class ConfigHandler {
-	private MoArrows plugin;
+	MoArrows moArrows = new MoArrows();
 	private LinkedHashMap<String, LinkedHashMap> data;
 	private String defaultConfigFile;
 	private boolean createDataDirectory() {
-	    File file = plugin.getDataFolder();
+	    File file = moArrows.getDataFolder();
 	    if (!file.isDirectory()){
 	        if (!file.mkdirs()) {
 	            return false;
@@ -27,7 +27,7 @@ public class ConfigHandler {
 	}
 
 	public ConfigHandler(MoArrows instance) {
-		this.plugin = instance;
+		this.moArrows = instance;
 		
 		defaultConfigFile = "# Uncomment arrow types below to remove them from your ";
 		defaultConfigFile += "server\nremove-arrows:\n#    - water\n#    - teleport\n#";
@@ -42,10 +42,10 @@ public class ConfigHandler {
 		defaultConfigFile += "penalties\nallow-penalty: true\n\n# Add material requirements to fired ";
 		defaultConfigFile += "arrows below\n# For example, if you want explosive arrows to ";
 		defaultConfigFile += "take 1 TNT and 2 blaze rods from the players inventory...\n";
-		defaultConfigFile += "# explosive-materials: 46:1,369:2\nexplosive-materials: \n";
-		defaultConfigFile += "poison-materials: \nlightning-materials: \nwater-materials: ";
-		defaultConfigFile += "\nteleport-materials: \nanimal-materials: \ntorch-materials: ";
-		defaultConfigFile += "\ndrill-materials: \n\n# The following are not";
+		defaultConfigFile += "# explosive-materials: 0:0,46:1,369:2\n# Note: the 0:0, is required for all materials (unfixed array bug).\n\nexplosive-materials: 0:0,\n";
+		defaultConfigFile += "poison-materials: 0:0,\nlightning-materials: 0:0,\nwater-materials: 0:0,";
+		defaultConfigFile += "\nteleport-materials: 0:0,\nanimal-materials: 0:0,\ntorch-materials: 0:0,";
+		defaultConfigFile += "\ndrill-materials: 0:0,\n\n# The following are not";
 		defaultConfigFile += "implemented yet\n\n# Change armor penalties below as ";
 		defaultConfigFile += "follows:\n# Usage:\n#[armor type]:\n#    - [decimal head]";
 		defaultConfigFile += "\n#    - [decimal chest]\n#    - [decimal legs]\n#    - ";
@@ -59,10 +59,10 @@ public class ConfigHandler {
 		
 		if (this.createDataDirectory()) {
 			Yaml yaml = new Yaml();
-			File configFile = new File(plugin.getDataFolder().getAbsolutePath() + File.separator + "config.yml");
+			File configFile = new File(moArrows.getDataFolder().getAbsolutePath() + File.separator + "config.yml");
 			try {
 				if (!configFile.exists()) {
-					plugin.log.info(plugin.getDescription().getName() + " created new config.yml");
+					moArrows.log.info(moArrows.getDescription().getName() + " created new config.yml");
 					configFile.createNewFile();
 					if (configFile.canWrite()) {
 						FileOutputStream fo = new FileOutputStream(configFile);
@@ -74,13 +74,13 @@ public class ConfigHandler {
 				FileInputStream fs = new FileInputStream(configFile);
 				this.data = (LinkedHashMap<String, LinkedHashMap>)yaml.load(fs);
 				if (this.data == null) {
-					plugin.log.warning(plugin.getDescription().getName() + " could not load " + plugin.getDescription().getName() + "/config.yml");
+					moArrows.log.warning(moArrows.getDescription().getName() + " could not load " + moArrows.getDescription().getName() + "/config.yml");
 				}
 			} catch (IOException e) {
-				plugin.log.warning("Error reading " + plugin.getDescription().getName() + "/config.yml + (" + e.getMessage() + ")");
+				moArrows.log.warning("Error reading " + moArrows.getDescription().getName() + "/config.yml + (" + e.getMessage() + ")");
 			}
 		} else {
-			plugin.log.warning(plugin.getDescription().getName() + " could not find or create a configuration file!");
+			moArrows.log.warning(moArrows.getDescription().getName() + " could not find or create a configuration file!");
 		}
 	}
 }

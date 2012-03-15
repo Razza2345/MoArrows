@@ -1,7 +1,7 @@
 name: MoArrows
 main: com.gmail.l0g1clvl.MoArrows.MoArrows
 author: MrAverage
-version: 0.7.0
+version: 0.9.4
 permissions:
     moarrows.use.all:
         default: op

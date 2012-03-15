@@ -19,7 +19,6 @@ import org.bukkit.material.MaterialData;
 import com.gmail.l0g1clvl.MoArrows.arrows.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.plugin.java.JavaPlugin;
 
 /**
  * Changes arrow types, fires arrows
@@ -33,12 +32,12 @@ public class MoArrowsPlayerListener implements Listener {
 	public static ItemStack[] stack;
 	public static List <String> matsList;
 	
-	private MoArrows plugin;
+	MoArrows moArrows = new MoArrows();
 	private MaterialHandler materialHandler;
 
 	public void onPlayerQuit(PlayerQuitEvent event) {
-		if (plugin.activeArrowType.containsKey(event.getPlayer())) {
-			plugin.activeArrowType.remove(event.getPlayer());
+		if (moArrows.activeArrowType.containsKey(event.getPlayer())) {
+			moArrows.activeArrowType.remove(event.getPlayer());
 		}
 	}
 
@@ -48,18 +47,17 @@ public class MoArrowsPlayerListener implements Listener {
 		Player player = event.getPlayer();
 		if (player.getItemInHand().getType() == Material.BOW) {
 			if (event.getAction() == Action.RIGHT_CLICK_AIR	|| event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-				//event.setCancelled(true);
 
-				if (!plugin.activeArrowType.containsKey(player)) {
-					plugin.activeArrowType.put(player, ArrowType.Normal);
+				if (!moArrows.activeArrowType.containsKey(player)) {
+					moArrows.activeArrowType.put(player, ArrowType.Normal);
 				}
 
-				ArrowType arrowType = plugin.activeArrowType.get(player);
+				ArrowType arrowType = moArrows.activeArrowType.get(player);
 				
 			} else if (event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK) {
 				
-				if (plugin.activeArrowType.containsKey(player)) {
-					int arrowTypeIndex = plugin.activeArrowType.get(player).ordinal();
+				if (moArrows.activeArrowType.containsKey(player)) {
+					int arrowTypeIndex = moArrows.activeArrowType.get(player).ordinal();
 					
 					do {
 						
@@ -77,28 +75,28 @@ public class MoArrowsPlayerListener implements Listener {
 							}
 						} 
 						
-						plugin.activeArrowType.put(player, ArrowType.values()[arrowTypeIndex]);
+						moArrows.activeArrowType.put(player, ArrowType.values()[arrowTypeIndex]);
 					
-					} while (plugin.removedArrows.contains(plugin.activeArrowType.get(player).toString().toLowerCase()) || !player.hasPermission("moarrows.use." + plugin.activeArrowType.get(player).toString().toLowerCase()));
+					} while (moArrows.removedArrows.contains(moArrows.activeArrowType.get(player).toString().toLowerCase()) || !player.hasPermission("moarrows.use." + moArrows.activeArrowType.get(player).toString().toLowerCase()));
 					
 
 				} else {
-					plugin.activeArrowType.put(player, ArrowType.Normal);
+					moArrows.activeArrowType.put(player, ArrowType.Normal);
 				}
 
 				// Figure out the perission node name
-				String specificPerm = "" + plugin.activeArrowType.get(player).toString().toLowerCase();
+				String specificPerm = "" + moArrows.activeArrowType.get(player).toString().toLowerCase();
 				
 				if (player.hasPermission("moarrows.use.all")) {
-					ArrowType arrowType = plugin.activeArrowType.get(player);
-					message = ChatColor.BLUE + "You select " + plugin.activeArrowType.get(player).toString() + " arrows.";
+					ArrowType arrowType = moArrows.activeArrowType.get(player);
+					message = ChatColor.BLUE + "You select " + moArrows.activeArrowType.get(player).toString() + " arrows.";
 					player.sendMessage(message);
 				} else if (player.hasPermission("moarrows.use." + specificPerm)) {
-					ArrowType arrowType = plugin.activeArrowType.get(player);
-					message = ChatColor.BLUE + "You select " + plugin.activeArrowType.get(player).toString() + " arrows.";
+					ArrowType arrowType = moArrows.activeArrowType.get(player);
+					message = ChatColor.BLUE + "You select " + moArrows.activeArrowType.get(player).toString() + " arrows.";
 					player.sendMessage(message);
 				} else {
-					plugin.activeArrowType.put(player, ArrowType.Normal);
+					moArrows.activeArrowType.put(player, ArrowType.Normal);
 				}
 			}
 		}
@@ -122,7 +120,7 @@ public class MoArrowsPlayerListener implements Listener {
         Inventory inventory = player.getInventory();
         ItemStack[] stack = new ItemStack[10];
         
-        String l = "" + plugin.activeArrowType.get(player);
+        String l = "" + moArrows.activeArrowType.get(player);
         switch (l) {
         case "Explosive" : stack = materialHandler.removedItemStacks.get("explosive");
         	break;
@@ -174,9 +172,9 @@ public class MoArrowsPlayerListener implements Listener {
 	        	//player is good to fire a special arrow by this point..
 	        	//associate a custom ID to an arrow entity with a specific arrow type
 	            for (int j = 0; j < 100; j ++) {
-	            	if (plugin.arrowID[j] == "") {
-	            		plugin.arrowID[j] = "" + arrowNum + "." + plugin.activeArrowType.get(player);
-	        	        //plugin.log.info(plugin.arrowID[j]);
+	            	if (moArrows.arrowID[j] == "") {
+	            		moArrows.arrowID[j] = "" + arrowNum + "." + moArrows.activeArrowType.get(player);
+	        	        //moArrows.log.info(moArrows.arrowID[j]);
 	        	        break;
 	            	} 
 	            }

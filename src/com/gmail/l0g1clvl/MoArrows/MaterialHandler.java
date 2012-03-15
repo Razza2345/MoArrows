@@ -9,20 +9,20 @@ import org.bukkit.inventory.ItemStack;
 import com.gmail.l0g1clvl.MoArrows.arrows.ArrowType;
 
 public class MaterialHandler {
-	private MoArrows plugin;
+	MoArrows moArrows = new MoArrows();
 	public static Map<String, ItemStack[]> removedItemStacks;
 	private ItemStack tempStack[];
 	private ItemStack nullStack[];
 	private String stackArray[];
 
 	public MaterialHandler(MoArrows instance) {
-		this.plugin = instance;
+		this.moArrows = instance;
 		this.removedItemStacks = new HashMap<String, ItemStack[]>();
 		nullStack = new ItemStack[1];
 		nullStack[0] = new ItemStack(0, 0);
 		
 		tempStack = new ItemStack[10];
-		String s1 = plugin.getConfig().getString("explosive-materials");
+		String s1 = moArrows.getConfig().getString("explosive-materials");
 		if (s1 != null) {
 			parseMaterial(s1, tempStack);
 			removedItemStacks.put("explosive", tempStack);
@@ -30,7 +30,7 @@ public class MaterialHandler {
 			removedItemStacks.put("explosive", nullStack);
 		}
 		tempStack = new ItemStack[10];
-		s1 = plugin.getConfig().getString("poison-materials");
+		s1 = moArrows.getConfig().getString("poison-materials");
 		if (s1 != null) {
 			parseMaterial(s1, tempStack);
 			removedItemStacks.put("poison", tempStack);
@@ -38,7 +38,7 @@ public class MaterialHandler {
 			removedItemStacks.put("poison", nullStack);
 		}
 		tempStack = new ItemStack[10];
-		s1 = plugin.getConfig().getString("lightning-materials");
+		s1 = moArrows.getConfig().getString("lightning-materials");
 		if (s1 != null) {
 			parseMaterial(s1, tempStack);
 			removedItemStacks.put("lightning", tempStack);
@@ -46,7 +46,7 @@ public class MaterialHandler {
 			removedItemStacks.put("lightning", nullStack);
 		}
 		tempStack = new ItemStack[10];
-		s1 = plugin.getConfig().getString("torch-materials");
+		s1 = moArrows.getConfig().getString("torch-materials");
 		if (s1 != null) {
 			parseMaterial(s1, tempStack);
 			removedItemStacks.put("torch", tempStack);
@@ -54,7 +54,7 @@ public class MaterialHandler {
 			removedItemStacks.put("torch", nullStack);
 		}
 		tempStack = new ItemStack[10];
-		s1 = plugin.getConfig().getString("water-materials");
+		s1 = moArrows.getConfig().getString("water-materials");
 		if (s1 != null) {
 			parseMaterial(s1, tempStack);
 			removedItemStacks.put("water", tempStack);
@@ -62,7 +62,7 @@ public class MaterialHandler {
 			removedItemStacks.put("water", nullStack);
 		}
 		tempStack = new ItemStack[10];
-		s1 = plugin.getConfig().getString("drill-materials");
+		s1 = moArrows.getConfig().getString("drill-materials");
 		if (s1 != null) {
 			parseMaterial(s1, tempStack);
 			removedItemStacks.put("drill", tempStack);
@@ -70,7 +70,7 @@ public class MaterialHandler {
 			removedItemStacks.put("drill", nullStack);
 		}
 		tempStack = new ItemStack[10];
-		s1 = plugin.getConfig().getString("teleport-materials");
+		s1 = moArrows.getConfig().getString("teleport-materials");
 		if (s1 != null) {
 			parseMaterial(s1, tempStack);
 			removedItemStacks.put("teleport", tempStack);
@@ -78,7 +78,7 @@ public class MaterialHandler {
 			removedItemStacks.put("teleport", nullStack);
 		}
 		tempStack = new ItemStack[10];
-		s1 = plugin.getConfig().getString("animal-materials");
+		s1 = moArrows.getConfig().getString("animal-materials");
 		if (s1 != null) {
 			parseMaterial(s1, tempStack);
 			removedItemStacks.put("animal", tempStack);
@@ -88,13 +88,19 @@ public class MaterialHandler {
 	}
 	
 	private void parseMaterial(String input, ItemStack tempStack[]) {
-		stackArray = new String[20];
-		String delim = "[:,]+";
-		stackArray = input.split(delim);
-		int arrayIndex = 0;
-		for (int z = 0; z < stackArray.length; z+=2) {
-				tempStack[arrayIndex] = new ItemStack(Integer.parseInt(stackArray[z]), Integer.parseInt(stackArray[z+1]));
-				arrayIndex++;
+		try {
+			stackArray = new String[20];
+			String delim = "[:,]+";
+			stackArray = input.split(delim);
+			int arrayIndex = 0;
+			for (int z = 0; z < stackArray.length; z+=2) {
+					tempStack[arrayIndex] = new ItemStack(Integer.parseInt(stackArray[z]), Integer.parseInt(stackArray[z+1]));
+					arrayIndex++;
+			}
+		}
+		catch (Exception e) {
+			moArrows.log.warning("[MoArrows] Error parsing material requirements!");
+			moArrows.log.warning("[MoArrows] Please review your config file.");
 		}
 	}
 }

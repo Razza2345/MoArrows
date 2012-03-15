@@ -3,6 +3,8 @@ package com.gmail.l0g1clvl.MoArrows;
 import java.util.List;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
@@ -19,6 +21,14 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import java.util.Random;
 
+import com.sk89q.worldedit.Vector;
+import com.sk89q.worldguard.LocalPlayer;
+import com.sk89q.worldguard.protection.managers.RegionManager;
+import com.sk89q.worldguard.protection.ApplicableRegionSet;
+import static com.sk89q.worldguard.bukkit.BukkitUtil.*;
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import org.bukkit.plugin.Plugin;
+
 /**
  * Listens for entity events and raises arrow effect events
  * @author MrAverage with code from ayan4m1
@@ -28,9 +38,12 @@ public class MoArrowsEntityListener extends JavaPlugin implements Listener {
 	private MoArrows plugin;
 	public static double damageMultiplier;
 	public String sendToArrow;
+	public static Boolean canShoot;
 
 	@EventHandler
 	public void onProjectileHit(ProjectileHitEvent event) {
+		
+		WorldGuardHook wg = new WorldGuardHook();
 		
 		//Need this in BOTH onProjectileHit AND onEntityDamage
 		sendToArrow = "";									//
@@ -57,6 +70,7 @@ public class MoArrowsEntityListener extends JavaPlugin implements Listener {
 				plugin.arrowID[i] = "";
 			}
 		}
+	
 		
 		//This removes server errors for arrows falling as 
 		//a result of block desruction.
@@ -90,8 +104,14 @@ public class MoArrowsEntityListener extends JavaPlugin implements Listener {
 						plugin.log.warning("Could not access class " + className);
 					}
 
-					arrowEffect.onGroundHitEvent(arrow);
-					
+					Player player = (Player) arrow.getShooter();
+					Location location = arrow.getLocation();
+					Boolean canShoot = wg.canShoot(player, arrow.getLocation());
+					if (canShoot) {
+						arrowEffect.onGroundHitEvent(arrow);
+					} else {
+						player.sendMessage(ChatColor.RED + "You are firing into a protected area!");
+					}
 				}
 			}
 		}
@@ -101,7 +121,7 @@ public class MoArrowsEntityListener extends JavaPlugin implements Listener {
 	public void onEntityDamage(EntityDamageEvent event) {
 		
 		//Need this in BOTH onProjectileHit AND onEntityDamage
-		sendToArrow = "";									//
+		//sendToArrow = "";									//
 		ArrowType arrowType = ArrowType.Normal;				//
 				
 		if (event.getCause() != EntityDamageEvent.DamageCause.PROJECTILE) {
@@ -116,7 +136,7 @@ public class MoArrowsEntityListener extends JavaPlugin implements Listener {
 		if (!(ebe.getDamager() instanceof Arrow)) {
 			return;
 		}
-
+		
 		Arrow arrow = (Arrow)ebe.getDamager();
 		if (!(arrow.getShooter() instanceof Player)) {
 			return;
@@ -125,7 +145,7 @@ public class MoArrowsEntityListener extends JavaPlugin implements Listener {
 		//Checks arrowID list for fired arrows, then assigns type
 		//based on the arrows unique ID.
 		for (int i = 0; i < plugin.arrowID.length; i++) {
-			if (plugin.arrowID[i].contains("" + event.getEntity().getEntityId())) {
+			if (plugin.arrowID[i].contains("" + ebe.getDamager().getEntityId())) {
 				String delim = "[.]";
 				String parse[] = plugin.arrowID[i].split(delim);
 				//plugin.log.info("deliminator = " + parse[parse.length-1]);
@@ -141,9 +161,6 @@ public class MoArrowsEntityListener extends JavaPlugin implements Listener {
 		}
 
 		if (arrowType != ArrowType.Normal) {
-			if (arrowType == ArrowType.Poison) {
-				event.setCancelled(true);
-			}
 				ArrowEffect arrowEffect = null;
 				String className = "com.gmail.l0g1clvl.MoArrows.arrows." + arrowType.toString() + "ArrowEffect";
 			
@@ -247,12 +264,11 @@ public class MoArrowsEntityListener extends JavaPlugin implements Listener {
 			}
 		}
 		
-		event.setDamage((int)Math.floor(damageMultiplier));
+		if (arrowType != ArrowType.Poison) {
+			event.setDamage((int)Math.floor(damageMultiplier));
+		}
 	
 		//plugin.log.info("Final damage: " + damageMultiplier + " rounded to " + (int)Math.floor(damageMultiplier));
-		
-		
+
 	}
-	
-	
 }
