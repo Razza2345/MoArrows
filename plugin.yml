@@ -1,7 +1,7 @@
 name: MoArrows
 main: com.gmail.l0g1clvl.MoArrows.MoArrows
 author: MrAverage
-version: 0.9.4
+version: 1.0.0
 permissions:
     moarrows.use.all:
         default: op
@@ -42,3 +42,22 @@ permissions:
     moarrows.infinite:
         default: false
         description: Will not not consume arrows when firing
+    moarrows.set:
+        default: false
+        description: Allows setting temporary configuration values
+    moarrows.help:
+        default: true
+        description: Allows viewing MoArrows help
+    moarrows.list:
+        default: true
+        description: Allows listing configuration values
+    moarrows.command:
+        default: true
+        description: Allows use of MoArrows command interface
+commands:
+    moarrows:
+        description: The main MoArrows command.
+        aliases: [ma]
+        usage: /moarrows <list|set|help> or /ma <list|set|help>
+        permission: moarrows.command
+        permission-message: Sorry dude.. you can't use MoArrows commands.

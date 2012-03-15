@@ -29,13 +29,14 @@ public class MoArrows extends JavaPlugin {
     public MaterialHandler materials;
     public static String[] arrowID;
     public static Plugin wgPlugin;
+    private CommandHandler command;
     
     //configuration variables
     public static List <String> removedArrows;
     public static double baseDamageMultiplier;
     public static double baseCritMultiplier;
-    public static double baseCritChance;
-    public static double baseMassiveChance;
+    public static Integer baseCritChance;
+    public static Integer baseMassiveChance;
     public static double baseMassiveMultiplier;
     public static double baseCrouchMultiplier;
     public static double baseArmorPenalyty[];
@@ -46,11 +47,13 @@ public class MoArrows extends JavaPlugin {
 		this.activeArrowType = new HashMap<Player, ArrowType>();
 	}
 
+	@Override
 	public void onEnable() {
-		 arrowID = new String[100];
-		 for (int i=0;i<100;i++) {
-			 arrowID[i] = "";
-		 }
+		command = new CommandHandler();
+		arrowID = new String[100];
+		for (int i=0;i<100;i++) {
+			arrowID[i] = "";
+		}
 		
 		this.config = new ConfigHandler(this);
 		this.materials = new MaterialHandler(this);
@@ -67,12 +70,15 @@ public class MoArrows extends JavaPlugin {
 		allowCrits = getConfig().getBoolean("allow-crit");
 		allowArmorPenalty = getConfig().getBoolean("allow-penalty");
 		baseCritMultiplier = getConfig().getDouble("base-crit");
-		baseCritChance = getConfig().getDouble("base-crit-chance");
-		baseMassiveChance = getConfig().getDouble("base-massive-chance");
+		baseMassiveMultiplier = getConfig().getDouble("base-massive");
+		baseCritChance = getConfig().getInt("base-crit-chance");
+		baseMassiveChance = getConfig().getInt("base-massive-chance");
 		
 		//hook WorldGuard
 		Plugin plugin = getServer().getPluginManager().getPlugin("WorldGuard");
 		wgPlugin = getServer().getPluginManager().getPlugin("WorldGuard");
+		
+		getCommand("moarrows").setExecutor(command);
 		
 	}
 

@@ -111,6 +111,9 @@ public class MoArrowsEntityListener extends JavaPlugin implements Listener {
 						arrowEffect.onGroundHitEvent(arrow);
 					} else {
 						player.sendMessage(ChatColor.RED + "You are firing into a protected area!");
+						plugin.log.warning("[MoArrows] " + player.getName() + " tried to fire into protected area at X:" 
+								+ arrow.getLocation().getX() + ", Y:" + + arrow.getLocation().getY() + ", Z:" + 
+								arrow.getLocation().getZ());
 					}
 				}
 			}
@@ -119,6 +122,8 @@ public class MoArrowsEntityListener extends JavaPlugin implements Listener {
 
 	@EventHandler
 	public void onEntityDamage(EntityDamageEvent event) {
+		
+		WorldGuardHook wg = new WorldGuardHook();
 		
 		//Need this in BOTH onProjectileHit AND onEntityDamage
 		//sendToArrow = "";									//
@@ -173,8 +178,18 @@ public class MoArrowsEntityListener extends JavaPlugin implements Listener {
 				} catch (IllegalAccessException e) {
 					plugin.log.warning("Could not access class " + className);
 				}
-
-				arrowEffect.onEntityHitEvent(arrow, event.getEntity());
+				
+				Player player = (Player) arrow.getShooter();
+				Location location = arrow.getLocation();
+				Boolean canShoot = wg.canShoot(player, arrow.getLocation());
+				if (canShoot) {
+					arrowEffect.onEntityHitEvent(arrow, event.getEntity());
+				} else {
+					player.sendMessage(ChatColor.RED + "You are firing into a protected area!");
+					plugin.log.warning("[MoArrows] " + player.getName() + " tried to fire into protected area at X:" 
+							+ arrow.getLocation().getX() + ", Y:" + + arrow.getLocation().getY() + ", Z:" + 
+							arrow.getLocation().getZ());
+				}
 			
 		}
 		
