@@ -10,31 +10,31 @@ permissions:
         default: true
         description: Allows use of normal arrows
     moarrows.use.explosive:
-        default: true
+        default: false
         description: Allows use of this special arrows
     moarrows.use.lightning:
-        default: true
+        default: false
         description: Allows use of this special arrows
     moarrows.use.water:
-        default: true
+        default: false
         description: Allows use of this special arrows
     moarrows.use.poison:
-        default: true
+        default: false
         description: Allows use of this special arrows
     moarrows.use.drill:
-        default: true
+        default: false
         description: Allows use of this special arrows
     moarrows.use.torch:
-        default: true
+        default: false
         description: Allows use of this special arrows
     moarrows.use.animal:
-        default: true
+        default: false
         description: Allows use of this special arrows
     moarrows.use.teleport:
-        default: true
+        default: false
         description: Allows use of this special arrows
     moarrows.free-fees:
-        default: true
+        default: false
         description: Bypass iConomy fee cost
     moarrows.free-materials:
         default: op

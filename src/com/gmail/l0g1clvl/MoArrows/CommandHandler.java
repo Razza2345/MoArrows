@@ -38,41 +38,77 @@ public class CommandHandler implements CommandExecutor {
 							sender.sendMessage(ChatColor.RED + "Use /ma set <variable name> <value>");
 						} else if (args.length == 3) {
 							if (isInteger(args[2])) {
-								switch (args[1]) {
-								case "base-crit-chance" : moArrows.baseCritChance = Integer.parseInt(args[2]);
-								sender.sendMessage(ChatColor.GREEN + "Value set successfully! Remember to change the config.yml for permanent changes!");
-								break;
-								case "base-massive-chance" : moArrows.baseMassiveChance = Integer.parseInt(args[2]);
-								sender.sendMessage(ChatColor.GREEN + "Value set successfully! Remember to change the config.yml for permanent changes!");
-								break;
-								default : sender.sendMessage(ChatColor.RED + "MoArrows command error: config value not found or value type mismatch.");
-								}
+								if (args[1] == "base-crit-chance") {
+									moArrows.baseCritChance = Integer.parseInt(args[2]);
+									sender.sendMessage(ChatColor.GREEN + "Value set successfully! Remember to change the config.yml for permanent changes!");
+								} else if (args[1] == "") {
+									moArrows.baseMassiveChance = Integer.parseInt(args[2]);
+									sender.sendMessage(ChatColor.GREEN + "Value set successfully! Remember to change the config.yml for permanent changes!");
+								} else
+									sender.sendMessage(ChatColor.RED + "MoArrows command error: config value not found or value type mismatch.");
+								
+//								switch (args[1]) {
+//								case "base-crit-chance" : moArrows.baseCritChance = Integer.parseInt(args[2]);
+//		incompatible			sender.sendMessage(ChatColor.GREEN + "Value set successfully! Remember to change the config.yml for permanent changes!");
+//		with Java 6				break;
+//								case "base-massive-chance" : moArrows.baseMassiveChance = Integer.parseInt(args[2]);
+//								sender.sendMessage(ChatColor.GREEN + "Value set successfully! Remember to change the config.yml for permanent changes!");
+//								break;
+//								default : sender.sendMessage(ChatColor.RED + "MoArrows command error: config value not found or value type mismatch.");
+//								}
+								
 							} else if (isDouble(args[2])) {
-								switch (args[1]) {
-								case "base-damage" : moArrows.baseDamageMultiplier = Double.parseDouble(args[2]);
-								sender.sendMessage(ChatColor.GREEN + "Value set successfully! Remember to change the config.yml for permanent changes!");
-								break;
-								case "crouch-damage" : moArrows.baseCrouchMultiplier = Double.parseDouble(args[2]);
-								sender.sendMessage(ChatColor.GREEN + "Value set successfully! Remember to change the config.yml for permanent changes!");
-								break;
-								case "base-crit" : moArrows.baseCritMultiplier = Double.parseDouble(args[2]);
-								sender.sendMessage(ChatColor.GREEN + "Value set successfully! Remember to change the config.yml for permanent changes!");
-								break;
-								case "base-massive" : moArrows.baseMassiveMultiplier = Double.parseDouble(args[2]);
-								sender.sendMessage(ChatColor.GREEN + "Value set successfully! Remember to change the config.yml for permanent changes!");
-								break;
-								default : sender.sendMessage(ChatColor.RED + "MoArrows command error: config value not found or value type mismatch.");
-								}
+								if (args[1] == "base-damage") {
+									moArrows.baseDamageMultiplier = Double.parseDouble(args[2]);
+									sender.sendMessage(ChatColor.GREEN + "Value set successfully! Remember to change the config.yml for permanent changes!");
+								} else if (args[1] == "crouch-damage") {
+									moArrows.baseCrouchMultiplier = Double.parseDouble(args[2]);
+									sender.sendMessage(ChatColor.GREEN + "Value set successfully! Remember to change the config.yml for permanent changes!");
+								} else if (args[1] == "base-crit") {
+									moArrows.baseCritMultiplier = Double.parseDouble(args[2]);
+									sender.sendMessage(ChatColor.GREEN + "Value set successfully! Remember to change the config.yml for permanent changes!");
+								} else if (args[1] == "base-massive") {
+									moArrows.baseMassiveMultiplier = Double.parseDouble(args[2]);
+									sender.sendMessage(ChatColor.GREEN + "Value set successfully! Remember to change the config.yml for permanent changes!");
+								} else
+									sender.sendMessage(ChatColor.RED + "MoArrows command error: config value not found or value type mismatch.");
+								
+//								switch (args[1]) {
+//								case "base-damage" : moArrows.baseDamageMultiplier = Double.parseDouble(args[2]);
+//								sender.sendMessage(ChatColor.GREEN + "Value set successfully! Remember to change the config.yml for permanent changes!");
+//								break;
+//		incompatible			case "crouch-damage" : moArrows.baseCrouchMultiplier = Double.parseDouble(args[2]);
+//		with java 6				sender.sendMessage(ChatColor.GREEN + "Value set successfully! Remember to change the config.yml for permanent changes!");
+//								break;
+//								case "base-crit" : moArrows.baseCritMultiplier = Double.parseDouble(args[2]);
+//								sender.sendMessage(ChatColor.GREEN + "Value set successfully! Remember to change the config.yml for permanent changes!");
+//								break;
+//								case "base-massive" : moArrows.baseMassiveMultiplier = Double.parseDouble(args[2]);
+//								sender.sendMessage(ChatColor.GREEN + "Value set successfully! Remember to change the config.yml for permanent changes!");
+//								break;
+//								default : sender.sendMessage(ChatColor.RED + "MoArrows command error: config value not found or value type mismatch.");
+//								}
+								
 							} else if (isBoolean(args[2])) {
-								switch (args[1]) {
-								case "allow-crit" : moArrows.allowCrits = Boolean.parseBoolean(args[2]);
-								sender.sendMessage(ChatColor.GREEN + "Value set successfully! Remember to change the config.yml for permanent changes!");
-								break;
-								case "allow-penalty" : moArrows.allowArmorPenalty = Boolean.parseBoolean(args[2]);
-								sender.sendMessage(ChatColor.GREEN + "Value set successfully! Remember to change the config.yml for permanent changes!");
-								break;
-								default : sender.sendMessage(ChatColor.RED + "MoArrows command error: config value not found or value type mismatch.");
-								}
+								if (args[1] == "allow-crit") {
+									moArrows.allowCrits = Boolean.parseBoolean(args[2]);
+									sender.sendMessage(ChatColor.GREEN + "Value set successfully! Remember to change the config.yml for permanent changes!");
+								} else if (args[1] == "allow-penalty") {
+									moArrows.allowArmorPenalty = Boolean.parseBoolean(args[2]);
+									sender.sendMessage(ChatColor.GREEN + "Value set successfully! Remember to change the config.yml for permanent changes!");
+								} else
+									sender.sendMessage(ChatColor.RED + "MoArrows command error: config value not found or value type mismatch.");
+								
+//								switch (args[1]) {
+//								case "allow-crit" : moArrows.allowCrits = Boolean.parseBoolean(args[2]);
+//		incompatible			sender.sendMessage(ChatColor.GREEN + "Value set successfully! Remember to change the config.yml for permanent changes!");
+//		with java 6				break;
+//								case "allow-penalty" : moArrows.allowArmorPenalty = Boolean.parseBoolean(args[2]);
+//								sender.sendMessage(ChatColor.GREEN + "Value set successfully! Remember to change the config.yml for permanent changes!");
+//								break;
+//								default : sender.sendMessage(ChatColor.RED + "MoArrows command error: config value not found or value type mismatch.");
+//								}
+								
 							} else {
 								sender.sendMessage(ChatColor.RED + "MoArrows command error: improper value format");
 								sender.sendMessage(ChatColor.RED + "Did you enter a double for an integer or vice versa?");

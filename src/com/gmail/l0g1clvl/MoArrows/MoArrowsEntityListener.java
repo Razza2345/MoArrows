@@ -8,6 +8,7 @@ import org.bukkit.World;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -42,7 +43,6 @@ public class MoArrowsEntityListener extends JavaPlugin implements Listener {
 
 	@EventHandler
 	public void onProjectileHit(ProjectileHitEvent event) {
-		
 		WorldGuardHook wg = new WorldGuardHook();
 		
 		//Need this in BOTH onProjectileHit AND onEntityDamage
@@ -92,7 +92,6 @@ public class MoArrowsEntityListener extends JavaPlugin implements Listener {
 			if (arrowType != ArrowType.Normal) {
 				if (true) {
 					ArrowEffect arrowEffect = null;
-
 					String className = "com.gmail.l0g1clvl.MoArrows.arrows." + arrowType.toString() + "ArrowEffect";
 					try {
 						arrowEffect = (ArrowEffect)Class.forName(className).newInstance();
@@ -265,15 +264,25 @@ public class MoArrowsEntityListener extends JavaPlugin implements Listener {
 		
 		if (player.isSneaking()) {
 			if (plugin.allowCrits && (critNum >= 0 && critNum < plugin.baseCritChance)) { 
-				damageMultiplier = ((event.getDamage()*plugin.baseCritMultiplier)/damageReduction)*plugin.baseDamageMultiplier;
-				player.sendMessage(ChatColor.YELLOW + "Critical hit!");
+				damageMultiplier = (((event.getDamage()*plugin.baseCritMultiplier)/damageReduction)*plugin.baseDamageMultiplier)*plugin.baseCrouchMultiplier;
+				if (event.getEntity() instanceof LivingEntity)
+					player.sendMessage(ChatColor.YELLOW + "Critical hit!");
+			} else if (plugin.allowCrits && (critNum >= plugin.baseCritChance && critNum < (plugin.baseCritChance + plugin.baseMassiveChance))) {	
+					damageMultiplier = (((event.getDamage()*plugin.baseMassiveMultiplier)/damageReduction)*plugin.baseDamageMultiplier)*plugin.baseCrouchMultiplier;
+					if (event.getEntity() instanceof LivingEntity)
+						player.sendMessage(ChatColor.RED + "MASSIVE CRIT!");
 			} else {
 				damageMultiplier = ((event.getDamage()*plugin.baseCrouchMultiplier)/damageReduction)*plugin.baseDamageMultiplier;
 			}
 		} else {
-			if (plugin.allowCrits && (critNum >= plugin.baseCritChance && critNum < (plugin.baseCritChance + plugin.baseMassiveChance))) {	
+			if (plugin.allowCrits && (critNum >= 0 && critNum < plugin.baseCritChance)) { 
+				damageMultiplier = ((event.getDamage()*plugin.baseCritMultiplier)/damageReduction)*plugin.baseDamageMultiplier;
+				if (event.getEntity() instanceof LivingEntity)
+					player.sendMessage(ChatColor.YELLOW + "Critical hit!");
+			} else if (plugin.allowCrits && (critNum >= plugin.baseCritChance && critNum < (plugin.baseCritChance + plugin.baseMassiveChance))) {	
 				damageMultiplier = ((event.getDamage()*plugin.baseMassiveMultiplier)/damageReduction)*plugin.baseDamageMultiplier;
-				player.sendMessage(ChatColor.RED + "MASSIVE CRIT!");
+				if (event.getEntity() instanceof LivingEntity)
+					player.sendMessage(ChatColor.RED + "MASSIVE CRIT!");
 			} else {
 				damageMultiplier = ((event.getDamage())/damageReduction)*plugin.baseDamageMultiplier;
 			}

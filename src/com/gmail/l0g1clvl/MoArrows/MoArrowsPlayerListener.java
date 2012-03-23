@@ -9,6 +9,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Arrow;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -43,11 +44,10 @@ public class MoArrowsPlayerListener implements Listener {
 
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent event) {
-		String message = " ";
+		String message = "";
 		Player player = event.getPlayer();
 		if (player.getItemInHand().getType() == Material.BOW) {
 			if (event.getAction() == Action.RIGHT_CLICK_AIR	|| event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-
 				if (!moArrows.activeArrowType.containsKey(player)) {
 					moArrows.activeArrowType.put(player, ArrowType.Normal);
 				}
@@ -55,12 +55,10 @@ public class MoArrowsPlayerListener implements Listener {
 				ArrowType arrowType = moArrows.activeArrowType.get(player);
 				
 			} else if (event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK) {
-				
 				if (moArrows.activeArrowType.containsKey(player)) {
 					int arrowTypeIndex = moArrows.activeArrowType.get(player).ordinal();
 					
 					do {
-						
 						if (!player.isSneaking()) {
 							if (arrowTypeIndex == ArrowType.values().length - 1) {
 								arrowTypeIndex = 0;
@@ -91,13 +89,13 @@ public class MoArrowsPlayerListener implements Listener {
 					ArrowType arrowType = moArrows.activeArrowType.get(player);
 					message = ChatColor.BLUE + "You select " + moArrows.activeArrowType.get(player).toString() + " arrows.";
 					player.sendMessage(message);
-				} else if (player.hasPermission("moarrows.use." + specificPerm)) {
+				} else if (player.hasPermission("moarrows.use." + specificPerm) || !player.isPermissionSet("moarrows.use." + specificPerm)) {
 					ArrowType arrowType = moArrows.activeArrowType.get(player);
 					message = ChatColor.BLUE + "You select " + moArrows.activeArrowType.get(player).toString() + " arrows.";
 					player.sendMessage(message);
-				} else {
-					moArrows.activeArrowType.put(player, ArrowType.Normal);
-				}
+				} //else if (!player.hasPermission("moarrows.use." + specificPerm)) {
+					//moArrows.activeArrowType.put(player, ArrowType.Normal);
+				//}
 			}
 		}
 	}
@@ -121,25 +119,45 @@ public class MoArrowsPlayerListener implements Listener {
         ItemStack[] stack = new ItemStack[10];
         
         String l = "" + moArrows.activeArrowType.get(player);
-        switch (l) {
-        case "Explosive" : stack = materialHandler.removedItemStacks.get("explosive");
-        	break;
-        case "Poison" : stack = materialHandler.removedItemStacks.get("poison");
-    		break;
-        case "Water" : stack = materialHandler.removedItemStacks.get("water");
-    		break;
-        case "Drill" : stack = materialHandler.removedItemStacks.get("drill");
-    		break;
-        case "Lightning" : stack = materialHandler.removedItemStacks.get("lightning");
-    		break;
-        case "Torch" : stack = materialHandler.removedItemStacks.get("torch");
-    		break;
-        case "Teleport" : stack = materialHandler.removedItemStacks.get("teleport");
-    		break;
-        case "Animal" : stack = materialHandler.removedItemStacks.get("animal");
-    		break;
-    	default : stack = null;
-        }
+        
+        if (l.contains("Explosive"))
+        	stack = materialHandler.removedItemStacks.get("explosive");
+        else if (l.contains("Poison"))
+        	stack = materialHandler.removedItemStacks.get("poison");
+        else if (l.contains("Water"))
+        	stack = materialHandler.removedItemStacks.get("water");
+        else if (l.contains("Drill"))
+        	stack = materialHandler.removedItemStacks.get("drill");
+        else if (l.contains("Lightning"))
+        	stack = materialHandler.removedItemStacks.get("lightning");
+        else if (l.contains("Torch"))
+        	stack = materialHandler.removedItemStacks.get("torch");
+        else if (l.contains("Teleport"))
+        	stack = materialHandler.removedItemStacks.get("teleport");
+        else if (l.contains("Animal"))
+        	stack = materialHandler.removedItemStacks.get("animal");
+        else
+        	stack = null;
+        	
+//        switch (l) { // incompatible with java 6
+//        case "Explosive" : stack = materialHandler.removedItemStacks.get("explosive");
+//        	break;
+//        case "Poison" : stack = materialHandler.removedItemStacks.get("poison");
+//    		break;
+//        case "Water" : stack = materialHandler.removedItemStacks.get("water");
+//    		break;
+//        case "Drill" : stack = materialHandler.removedItemStacks.get("drill");
+//    		break;
+//        case "Lightning" : stack = materialHandler.removedItemStacks.get("lightning");
+//    		break;
+//        case "Torch" : stack = materialHandler.removedItemStacks.get("torch");
+//    		break;
+//        case "Teleport" : stack = materialHandler.removedItemStacks.get("teleport");
+//    		break;
+//        case "Animal" : stack = materialHandler.removedItemStacks.get("animal");
+//    		break;
+//    	  default : stack = null;
+//        }
         
         if (stack != null) {
         
@@ -176,7 +194,7 @@ public class MoArrowsPlayerListener implements Listener {
 	            		moArrows.arrowID[j] = "" + arrowNum + "." + moArrows.activeArrowType.get(player);
 	        	        //moArrows.log.info(moArrows.arrowID[j]);
 	        	        break;
-	            	} 
+	            	}
 	            }
 	        }
         }

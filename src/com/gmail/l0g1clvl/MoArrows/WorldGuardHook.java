@@ -18,25 +18,29 @@ public class WorldGuardHook extends JavaPlugin {
 	
 //	Custom method
 	boolean canShoot(org.bukkit.entity.Player player, org.bukkit.Location location) {
-		if (!getWorldGuard().canBuild(player,
-			location.getBlock().getRelative(0, 0, 0)) || 
-			!getWorldGuard().canBuild(player,
-		    location.getBlock().getRelative(2, 2, 2)) || 
-		    !getWorldGuard().canBuild(player,
-		    location.getBlock().getRelative(2, -2, 2)) || 
-			!getWorldGuard().canBuild(player,
-			location.getBlock().getRelative(-2, -2, 2)) || 
-			!getWorldGuard().canBuild(player,
-			location.getBlock().getRelative(-2, 2, 2)) || 
-			!getWorldGuard().canBuild(player,
-			location.getBlock().getRelative(2, 2, -2)) || 
-			!getWorldGuard().canBuild(player,
-			location.getBlock().getRelative(-2, 2, -2)) || 
-			!getWorldGuard().canBuild(player,
-			location.getBlock().getRelative(2, -2, -2)) || 
-			!getWorldGuard().canBuild(player,
-			location.getBlock().getRelative(-2, -2, -2))) {
-			return false;
+		if (getWorldGuard() != null) {
+			if (!getWorldGuard().canBuild(player,
+				location.getBlock().getRelative(0, 0, 0)) || 
+				!getWorldGuard().canBuild(player,
+			    location.getBlock().getRelative(2, 2, 2)) || 
+			    !getWorldGuard().canBuild(player,
+			    location.getBlock().getRelative(2, -2, 2)) || 
+				!getWorldGuard().canBuild(player,
+				location.getBlock().getRelative(-2, -2, 2)) || 
+				!getWorldGuard().canBuild(player,
+				location.getBlock().getRelative(-2, 2, 2)) || 
+				!getWorldGuard().canBuild(player,
+				location.getBlock().getRelative(2, 2, -2)) || 
+				!getWorldGuard().canBuild(player,
+				location.getBlock().getRelative(-2, 2, -2)) || 
+				!getWorldGuard().canBuild(player,
+				location.getBlock().getRelative(2, -2, -2)) || 
+				!getWorldGuard().canBuild(player,
+				location.getBlock().getRelative(-2, -2, -2))) {
+				return false;
+			} else {
+				return true;
+			}
 		} else {
 			return true;
 		}
