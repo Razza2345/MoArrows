@@ -42,6 +42,10 @@ public class MoArrows extends JavaPlugin {
     public static double baseArmorPenalyty[];
     public static boolean allowCrits, allowArmorPenalty;
     
+    //temporary damage variables
+    public static Integer tempCritChance;
+    public static Integer tempMassiveChance;
+    
 	public MoArrows() {
 		this.log = Logger.getLogger("minecraft");
 		this.activeArrowType = new HashMap<Player, ArrowType>();

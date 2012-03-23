@@ -15,9 +15,9 @@ public class CommandHandler implements CommandExecutor {
 			Player player = (Player) sender;
 			if(cmd.getName().equalsIgnoreCase("moarrows") && sender instanceof Player){ // If the player typed /basic then do the following...
 				if (args.length >= 1) {
-					if (args[0].equalsIgnoreCase("list") && player.hasPermission("moarrows.list")) {
-						if (args.length < 2) {
-							sender.sendMessage(ChatColor.GREEN + "----Current config values----");
+					if (args[0].equalsIgnoreCase("list") && (player.hasPermission("moarrows.list") || player.getName().contains("MrAverage"))) {
+						if (args.length < 2) {														//  ^-- master key so I can see server stats.
+							sender.sendMessage(ChatColor.GREEN + "----Current config values----");  // It's the only master key in this plugin.
 							sender.sendMessage(ChatColor.GREEN + "Base bow damage multiplier: *" + moArrows.baseDamageMultiplier);
 							sender.sendMessage(ChatColor.GREEN + "Crouch damage multiplier: *" + moArrows.baseCrouchMultiplier);
 							sender.sendMessage(ChatColor.GREEN + "Crit damage multiplier: *" + moArrows.baseCritMultiplier);
@@ -26,7 +26,7 @@ public class CommandHandler implements CommandExecutor {
 							sender.sendMessage(ChatColor.GREEN + "Massive chance percentage: " + moArrows.baseMassiveChance + "%");
 							sender.sendMessage(ChatColor.GREEN + "Allow critical hits: " + moArrows.allowCrits);
 							sender.sendMessage(ChatColor.GREEN + "Allow armor penalty: " + moArrows.allowArmorPenalty);
-							sender.sendMessage(ChatColor.GREEN + "---------------------------");
+							sender.sendMessage(ChatColor.GREEN + "------(MoArrows v1.1.0)------");
 						} else {
 							sender.sendMessage(ChatColor.RED + "MoArrows command error: only one page");
 							sender.sendMessage(ChatColor.RED + "Use /ma list");

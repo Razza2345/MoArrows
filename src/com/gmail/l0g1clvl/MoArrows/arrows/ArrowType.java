@@ -9,5 +9,7 @@ public enum ArrowType {
 	Torch,		//works
 	Animal,		//works
 	Teleport,	//works
-	Poison		//works
+	Poison,		//works
+	Razor,
+	Slow
 }

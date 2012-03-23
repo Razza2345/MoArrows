@@ -136,28 +136,12 @@ public class MoArrowsPlayerListener implements Listener {
         	stack = materialHandler.removedItemStacks.get("teleport");
         else if (l.contains("Animal"))
         	stack = materialHandler.removedItemStacks.get("animal");
-        else
+        else if (l.contains("Razor"))
+        	stack = materialHandler.removedItemStacks.get("razor");
+        else if (l.contains("Slow"))
+        	stack = materialHandler.removedItemStacks.get("slow"); 
+        else		//all lower case! if not, it will kick it here!
         	stack = null;
-        	
-//        switch (l) { // incompatible with java 6
-//        case "Explosive" : stack = materialHandler.removedItemStacks.get("explosive");
-//        	break;
-//        case "Poison" : stack = materialHandler.removedItemStacks.get("poison");
-//    		break;
-//        case "Water" : stack = materialHandler.removedItemStacks.get("water");
-//    		break;
-//        case "Drill" : stack = materialHandler.removedItemStacks.get("drill");
-//    		break;
-//        case "Lightning" : stack = materialHandler.removedItemStacks.get("lightning");
-//    		break;
-//        case "Torch" : stack = materialHandler.removedItemStacks.get("torch");
-//    		break;
-//        case "Teleport" : stack = materialHandler.removedItemStacks.get("teleport");
-//    		break;
-//        case "Animal" : stack = materialHandler.removedItemStacks.get("animal");
-//    		break;
-//    	  default : stack = null;
-//        }
         
         if (stack != null) {
         
@@ -191,9 +175,12 @@ public class MoArrowsPlayerListener implements Listener {
 	        	//associate a custom ID to an arrow entity with a specific arrow type
 	            for (int j = 0; j < 100; j ++) {
 	            	if (moArrows.arrowID[j] == "") {
-	            		moArrows.arrowID[j] = "" + arrowNum + "." + moArrows.activeArrowType.get(player);
-	        	        //moArrows.log.info(moArrows.arrowID[j]);
-	        	        break;
+	            		if (player.isSneaking())
+	            			moArrows.arrowID[j] = "" + arrowNum + "." + moArrows.activeArrowType.get(player) + ".c";
+	            		else
+	            			moArrows.arrowID[j] = "" + arrowNum + "." + moArrows.activeArrowType.get(player) + ".s";
+	        	    moArrows.log.info("#debug arrow id:" + moArrows.arrowID[j]);
+	        	    break;
 	            	}
 	            }
 	        }

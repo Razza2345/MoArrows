@@ -85,6 +85,22 @@ public class MaterialHandler {
 		} else {
 			removedItemStacks.put("animal", nullStack);
 		}
+		tempStack = new ItemStack[10];
+		s1 = moArrows.getConfig().getString("razor-materials");
+		if (s1 != null) {
+			parseMaterial(s1, tempStack);
+			removedItemStacks.put("razor", tempStack);
+		} else {
+			removedItemStacks.put("razor", nullStack);
+		}
+		tempStack = new ItemStack[10];
+		s1 = moArrows.getConfig().getString("slow-materials");
+		if (s1 != null) {
+			parseMaterial(s1, tempStack);
+			removedItemStacks.put("slow", tempStack);
+		} else {
+			removedItemStacks.put("slow", nullStack);
+		}
 	}
 	
 	private void parseMaterial(String input, ItemStack tempStack[]) {

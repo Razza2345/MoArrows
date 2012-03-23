@@ -32,7 +32,7 @@ public class ConfigHandler {
 		defaultConfigFile = "# Uncomment arrow types below to remove them from your ";
 		defaultConfigFile += "server\nremove-arrows:\n#    - water\n#    - teleport\n#";
 		defaultConfigFile += "    - poison\n#    - explosive\n#    - drill\n#    - animal\n#";
-		defaultConfigFile += "    - torch\n\n# Increase or decrease total bow damage by ";
+		defaultConfigFile += "    - torch\n#    - razor\n#    - slow\n\n# Increase or decrease total bow damage by ";
 		defaultConfigFile += "changing this multiplier\nbase-damage: 1.0\n# Increase or ";
 		defaultConfigFile += "decrease crouch damage by changing this multiplier\n";
 		defaultConfigFile += "crouch-damage: 1.2\n# Turn crits on or off and set their ";
@@ -45,7 +45,7 @@ public class ConfigHandler {
 		defaultConfigFile += "# explosive-materials: 0:0,46:1,369:2\n# Note: the 0:0, is required for all materials (unfixed array bug).\n\nexplosive-materials: 0:0,\n";
 		defaultConfigFile += "poison-materials: 0:0,\nlightning-materials: 0:0,\nwater-materials: 0:0,";
 		defaultConfigFile += "\nteleport-materials: 0:0,\nanimal-materials: 0:0,\ntorch-materials: 0:0,";
-		defaultConfigFile += "\ndrill-materials: 0:0,\n\n# The following are not";
+		defaultConfigFile += "\ndrill-materials: 0:0,\nrazor-materials: 0:0,\nslow-materials: 0:0,\n\n# The following are not";
 		defaultConfigFile += "implemented yet\n\n# Change armor penalties below as ";
 		defaultConfigFile += "follows:\n# Usage:\n#[armor type]:\n#    - [decimal head]";
 		defaultConfigFile += "\n#    - [decimal chest]\n#    - [decimal legs]\n#    - ";
