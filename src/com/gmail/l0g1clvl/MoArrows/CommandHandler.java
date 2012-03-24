@@ -26,7 +26,7 @@ public class CommandHandler implements CommandExecutor {
 							sender.sendMessage(ChatColor.GREEN + "Massive chance percentage: " + moArrows.baseMassiveChance + "%");
 							sender.sendMessage(ChatColor.GREEN + "Allow critical hits: " + moArrows.allowCrits);
 							sender.sendMessage(ChatColor.GREEN + "Allow armor penalty: " + moArrows.allowArmorPenalty);
-							sender.sendMessage(ChatColor.GREEN + "------(MoArrows v1.1.0)------");
+							sender.sendMessage(ChatColor.GREEN + "------(MoArrows v1.1.1)------");
 						} else {
 							sender.sendMessage(ChatColor.RED + "MoArrows command error: only one page");
 							sender.sendMessage(ChatColor.RED + "Use /ma list");

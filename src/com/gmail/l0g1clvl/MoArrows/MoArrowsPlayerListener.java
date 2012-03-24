@@ -75,7 +75,9 @@ public class MoArrowsPlayerListener implements Listener {
 						
 						moArrows.activeArrowType.put(player, ArrowType.values()[arrowTypeIndex]);
 					
-					} while (moArrows.removedArrows.contains(moArrows.activeArrowType.get(player).toString().toLowerCase()) || !player.hasPermission("moarrows.use." + moArrows.activeArrowType.get(player).toString().toLowerCase()));
+					} while ((moArrows.removedArrows.contains(moArrows.activeArrowType.get(player).toString().toLowerCase())
+							|| !player.hasPermission("moarrows.use." + moArrows.activeArrowType.get(player).toString().toLowerCase()))
+							&& !player.hasPermission("moarrows.use.all"));
 					
 
 				} else {
@@ -179,7 +181,7 @@ public class MoArrowsPlayerListener implements Listener {
 	            			moArrows.arrowID[j] = "" + arrowNum + "." + moArrows.activeArrowType.get(player) + ".c";
 	            		else
 	            			moArrows.arrowID[j] = "" + arrowNum + "." + moArrows.activeArrowType.get(player) + ".s";
-	        	    moArrows.log.info("#debug arrow id:" + moArrows.arrowID[j]);
+	        	    //moArrows.log.info("#debug arrow id:" + moArrows.arrowID[j]);
 	        	    break;
 	            	}
 	            }

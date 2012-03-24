@@ -70,7 +70,7 @@ public class MoArrowsEntityListener extends JavaPlugin implements Listener {
 				String parse[] = plugin.arrowID[i].split(delim);
 				sendToArrow = parse[parse.length-2];
 				sendToDamage = parse[parse.length-1];
-				plugin.log.info("#debug at:" + parse[parse.length-2] + " id:" + event.getEntity().getEntityId() + " stance: " + sendToDamage);
+				//plugin.log.info("#debug at:" + parse[parse.length-2] + " id:" + event.getEntity().getEntityId() + " stance: " + sendToDamage);
 				plugin.arrowID[i] = "";
 			}
 		}
@@ -246,7 +246,7 @@ public class MoArrowsEntityListener extends JavaPlugin implements Listener {
 //------------------------BEGIN "MASSIVE CRITICALS" CODE--------------------------
 		
 		//debug output
-		plugin.log.info("#debug Initial damage: " + String.valueOf(event.getDamage()));
+		//plugin.log.info("#debug Initial damage: " + String.valueOf(event.getDamage()));
 		
 		Random randomGenerator = new Random();
 		int critNum = randomGenerator.nextInt(100);
@@ -294,8 +294,8 @@ public class MoArrowsEntityListener extends JavaPlugin implements Listener {
 		}
 		
 		//debug output
-		plugin.log.info("#debug Final damage:" + damageMultiplier + " rounded to:" + (int)Math.floor(damageMultiplier));
-		plugin.log.info("#debug Final crit chance:" + plugin.tempCritChance + " Final massive chance:" + plugin.tempMassiveChance);
+		//plugin.log.info("#debug Final damage:" + damageMultiplier + " rounded to:" + (int)Math.floor(damageMultiplier));
+		//plugin.log.info("#debug Final crit chance:" + plugin.tempCritChance + " Final massive chance:" + plugin.tempMassiveChance);
 		
 		// reset flags and temp variables
 		sendToDamage = "";
