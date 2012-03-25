@@ -46,44 +46,12 @@ public class MaterialHandler {
 			removedItemStacks.put("lightning", nullStack);
 		}
 		tempStack = new ItemStack[10];
-		s1 = moArrows.getConfig().getString("torch-materials");
-		if (s1 != null) {
-			parseMaterial(s1, tempStack);
-			removedItemStacks.put("torch", tempStack);
-		} else {
-			removedItemStacks.put("torch", nullStack);
-		}
-		tempStack = new ItemStack[10];
-		s1 = moArrows.getConfig().getString("water-materials");
-		if (s1 != null) {
-			parseMaterial(s1, tempStack);
-			removedItemStacks.put("water", tempStack);
-		} else {
-			removedItemStacks.put("water", nullStack);
-		}
-		tempStack = new ItemStack[10];
-		s1 = moArrows.getConfig().getString("drill-materials");
-		if (s1 != null) {
-			parseMaterial(s1, tempStack);
-			removedItemStacks.put("drill", tempStack);
-		} else {
-			removedItemStacks.put("drill", nullStack);
-		}
-		tempStack = new ItemStack[10];
 		s1 = moArrows.getConfig().getString("teleport-materials");
 		if (s1 != null) {
 			parseMaterial(s1, tempStack);
 			removedItemStacks.put("teleport", tempStack);
 		} else {
 			removedItemStacks.put("teleport", nullStack);
-		}
-		tempStack = new ItemStack[10];
-		s1 = moArrows.getConfig().getString("animal-materials");
-		if (s1 != null) {
-			parseMaterial(s1, tempStack);
-			removedItemStacks.put("animal", tempStack);
-		} else {
-			removedItemStacks.put("animal", nullStack);
 		}
 		tempStack = new ItemStack[10];
 		s1 = moArrows.getConfig().getString("razor-materials");
@@ -101,6 +69,30 @@ public class MaterialHandler {
 		} else {
 			removedItemStacks.put("slow", nullStack);
 		}
+		tempStack = new ItemStack[10];
+		s1 = moArrows.getConfig().getString("fire-materials");
+		if (s1 != null) {
+			parseMaterial(s1, tempStack);
+			removedItemStacks.put("fire", tempStack);
+		} else {
+			removedItemStacks.put("fire", nullStack);
+		}
+		tempStack = new ItemStack[10];
+        s1 = moArrows.getConfig().getString("net-materials");
+        if (s1 != null) {
+            parseMaterial(s1, tempStack);
+            removedItemStacks.put("net", tempStack);
+        } else {
+            removedItemStacks.put("net", nullStack);
+        }
+        tempStack = new ItemStack[10];
+        s1 = moArrows.getConfig().getString("doombringer-materials");
+        if (s1 != null) {
+            parseMaterial(s1, tempStack);
+            removedItemStacks.put("doombringer", tempStack);
+        } else {
+            removedItemStacks.put("doombringer", nullStack);
+        }
 	}
 	
 	private void parseMaterial(String input, ItemStack tempStack[]) {

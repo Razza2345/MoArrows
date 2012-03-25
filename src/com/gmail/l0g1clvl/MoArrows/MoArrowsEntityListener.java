@@ -109,7 +109,28 @@ public class MoArrowsEntityListener extends JavaPlugin implements Listener {
 
 					Player player = (Player) arrow.getShooter();
 					Location location = arrow.getLocation();
-					Boolean canShoot = wg.canShoot(player, arrow.getLocation());
+					
+					Boolean canShoot;
+					if (className.contains("Doom")) { //Check this powerful arrow at several radii
+						canShoot = wg.canShoot(player, arrow.getLocation(), 16);
+						if (canShoot)
+							canShoot = wg.canShoot(player, arrow.getLocation(), 14);
+						if (canShoot)
+							canShoot = wg.canShoot(player, arrow.getLocation(), 12);
+						if (canShoot)
+							canShoot = wg.canShoot(player, arrow.getLocation(), 10);
+						if (canShoot)
+							canShoot = wg.canShoot(player, arrow.getLocation(), 8);
+						if (canShoot)
+							canShoot = wg.canShoot(player, arrow.getLocation(), 6);
+						if (canShoot)
+							canShoot = wg.canShoot(player, arrow.getLocation(), 4);
+						if (canShoot)
+							canShoot = wg.canShoot(player, arrow.getLocation(), 2);
+					}
+					else
+						canShoot = wg.canShoot(player, arrow.getLocation(), 2);
+					
 					if (canShoot) {
 						arrowEffect.onGroundHitEvent(arrow);
 					} else {
@@ -172,7 +193,18 @@ public class MoArrowsEntityListener extends JavaPlugin implements Listener {
 				
 				Player player = (Player) arrow.getShooter();
 				Location location = arrow.getLocation();
-				Boolean canShoot = wg.canShoot(player, arrow.getLocation());
+				
+				Boolean canShoot;
+				if (className.contains("Doom")) { //Check this powerful arrow at several radii
+					canShoot = wg.canShoot(player, arrow.getLocation(), 10);
+					if (canShoot)
+						canShoot = wg.canShoot(player, arrow.getLocation(), 5);
+					if (canShoot)
+						canShoot = wg.canShoot(player, arrow.getLocation(), 2);
+				}
+				else
+					canShoot = wg.canShoot(player, arrow.getLocation(), 2);
+				
 				if (canShoot) {
 					arrowEffect.onEntityHitEvent(arrow, event.getEntity());
 				} else {

@@ -1,26 +1,27 @@
 package com.gmail.l0g1clvl.MoArrows.arrows;
 
 import org.bukkit.Effect;
+import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 
 import com.gmail.l0g1clvl.MoArrows.MoArrows;
 
-public class SlowArrowEffect implements ArrowEffect {
+public class FireArrowEffect implements ArrowEffect {
 	private MoArrows plugin;
 	
 	public void onEntityHitEvent(Arrow arrow, Entity target) {
-		LivingEntity e = (LivingEntity) target;
-		e.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 400, 4));
+		Entity e = (Entity) target;
+		e.setFireTicks(400);
+		arrow.remove();
 	}
 
 	public void onGroundHitEvent(Arrow arrow) {
-		Player player = (Player) arrow.getShooter();
-		player.playEffect(arrow.getLocation(), Effect.POTION_BREAK, 5);
+		Location blockLoc = arrow.getLocation();
+		Block b = (Block) blockLoc.getBlock();
+		b.setTypeId(51, true);
 	}
-	
 }

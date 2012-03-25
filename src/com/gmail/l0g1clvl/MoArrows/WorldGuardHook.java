@@ -17,26 +17,38 @@ public class WorldGuardHook extends JavaPlugin {
 	}
 	
 //	Custom method
-	boolean canShoot(org.bukkit.entity.Player player, org.bukkit.Location location) {
-		if (getWorldGuard() != null) {
+	boolean canShoot(org.bukkit.entity.Player player, org.bukkit.Location location, int radius) {
+		if (getWorldGuard() != null) { //add radius variable!!!!!!!!!!!
 			if (!getWorldGuard().canBuild(player,
 				location.getBlock().getRelative(0, 0, 0)) || 
 				!getWorldGuard().canBuild(player,
-			    location.getBlock().getRelative(2, 2, 2)) || 
+				location.getBlock().getRelative(radius, 0, 0)) || 
+				!getWorldGuard().canBuild(player,
+				location.getBlock().getRelative(0, radius, 0)) || 
+				!getWorldGuard().canBuild(player,
+				location.getBlock().getRelative(0, 0, radius)) || 
+				!getWorldGuard().canBuild(player,
+				location.getBlock().getRelative(-radius, 0, 0)) || 
+				!getWorldGuard().canBuild(player,
+				location.getBlock().getRelative(0, -radius, 0)) || 
+				!getWorldGuard().canBuild(player,
+				location.getBlock().getRelative(0, 0, -radius)) || 
+				!getWorldGuard().canBuild(player,
+			    location.getBlock().getRelative(radius, radius, radius)) || 
 			    !getWorldGuard().canBuild(player,
-			    location.getBlock().getRelative(2, -2, 2)) || 
+			    location.getBlock().getRelative(radius, -radius, radius)) || 
 				!getWorldGuard().canBuild(player,
-				location.getBlock().getRelative(-2, -2, 2)) || 
+				location.getBlock().getRelative(-radius, -radius, radius)) || 
 				!getWorldGuard().canBuild(player,
-				location.getBlock().getRelative(-2, 2, 2)) || 
+				location.getBlock().getRelative(-radius, radius, radius)) || 
 				!getWorldGuard().canBuild(player,
-				location.getBlock().getRelative(2, 2, -2)) || 
+				location.getBlock().getRelative(radius, radius, -radius)) || 
 				!getWorldGuard().canBuild(player,
-				location.getBlock().getRelative(-2, 2, -2)) || 
+				location.getBlock().getRelative(-radius, radius, -radius)) || 
 				!getWorldGuard().canBuild(player,
-				location.getBlock().getRelative(2, -2, -2)) || 
+				location.getBlock().getRelative(radius, -radius, -radius)) || 
 				!getWorldGuard().canBuild(player,
-				location.getBlock().getRelative(-2, -2, -2))) {
+				location.getBlock().getRelative(-radius, -radius, -radius))) {
 				return false;
 			} else {
 				return true;

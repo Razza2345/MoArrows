@@ -6,10 +6,12 @@ import org.bukkit.entity.Entity;
 public class LightningArrowEffect implements ArrowEffect {
 	public void onEntityHitEvent(Arrow arrow, Entity target) {
 		arrow.getWorld().strikeLightning(arrow.getLocation());
+		arrow.remove();
 	}
 
 	public void onGroundHitEvent(Arrow arrow) {
 		arrow.getWorld().strikeLightning(arrow.getLocation());
+		arrow.remove();
 	}
 }
 

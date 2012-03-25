@@ -17,13 +17,11 @@ public class RazorArrowEffect implements ArrowEffect {
 private MoArrows plugin;
 	
 	public void onEntityHitEvent(Arrow arrow, Entity target) {
-		LivingEntity e = (LivingEntity) target;
-//		plugin.tempCritChance = plugin.baseCritChance*2;
-//		plugin.tempMassiveChance = plugin.baseMassiveChance*2;
+		
 	}
 
 	public void onGroundHitEvent(Arrow arrow) {
-		Player player = (Player) arrow.getShooter();
+		
 	}
 	
 }

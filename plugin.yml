@@ -1,7 +1,7 @@
 name: MoArrows
 main: com.gmail.l0g1clvl.MoArrows.MoArrows
 author: MrAverage
-version: 1.1.1
+version: 1.2.0
 permissions:
     moarrows.use.all:
         default: op
@@ -11,34 +11,31 @@ permissions:
         description: Allows use of normal arrows
     moarrows.use.explosive:
         default: false
-        description: Allows use of this special arrows
+        description: Allows use of this special arrow
     moarrows.use.lightning:
         default: false
-        description: Allows use of this special arrows
-    moarrows.use.water:
-        default: false
-        description: Allows use of this special arrows
+        description: Allows use of this special arrow
     moarrows.use.poison:
         default: false
-        description: Allows use of this special arrows
-    moarrows.use.drill:
-        default: false
-        description: Allows use of this special arrows
-    moarrows.use.torch:
-        default: false
-        description: Allows use of this special arrows
-    moarrows.use.animal:
-        default: false
-        description: Allows use of this special arrows
+        description: Allows use of this special arrow
     moarrows.use.teleport:
         default: false
-        description: Allows use of this special arrows
+        description: Allows use of this special arrow
     moarrows.use.razor:
         default: false
-        description: Allows use of this special arrows
+        description: Allows use of this special arrow
     moarrows.use.slow:
         default: false
-        description: Allows use of this special arrows
+        description: Allows use of this special arrow
+    moarrows.use.fire:
+        default: false
+        description: Allows use of this special arrow
+    moarrows.use.net:
+        default: false
+        description: Allows use of this special arrow
+    moarrows.use.doombringer:
+        default: false
+        description: Allows use of this special arrow
     moarrows.free-fees:
         default: false
         description: Bypass iConomy fee cost

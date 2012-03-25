@@ -83,21 +83,10 @@ public class MoArrowsPlayerListener implements Listener {
 				} else {
 					moArrows.activeArrowType.put(player, ArrowType.Normal);
 				}
-
-				// Figure out the perission node name
-				String specificPerm = "" + moArrows.activeArrowType.get(player).toString().toLowerCase();
 				
-				if (player.hasPermission("moarrows.use.all")) {
-					ArrowType arrowType = moArrows.activeArrowType.get(player);
-					message = ChatColor.BLUE + "You select " + moArrows.activeArrowType.get(player).toString() + " arrows.";
-					player.sendMessage(message);
-				} else if (player.hasPermission("moarrows.use." + specificPerm) || !player.isPermissionSet("moarrows.use." + specificPerm)) {
-					ArrowType arrowType = moArrows.activeArrowType.get(player);
-					message = ChatColor.BLUE + "You select " + moArrows.activeArrowType.get(player).toString() + " arrows.";
-					player.sendMessage(message);
-				} //else if (!player.hasPermission("moarrows.use." + specificPerm)) {
-					//moArrows.activeArrowType.put(player, ArrowType.Normal);
-				//}
+				ArrowType arrowType = moArrows.activeArrowType.get(player);
+				message = ChatColor.BLUE + "You select " + moArrows.activeArrowType.get(player).toString() + " arrows.";
+				player.sendMessage(message);
 			}
 		}
 	}
@@ -142,6 +131,12 @@ public class MoArrowsPlayerListener implements Listener {
         	stack = materialHandler.removedItemStacks.get("razor");
         else if (l.contains("Slow"))
         	stack = materialHandler.removedItemStacks.get("slow"); 
+        else if (l.contains("Fire"))
+        	stack = materialHandler.removedItemStacks.get("fire");
+        else if (l.contains("Net"))
+            stack = materialHandler.removedItemStacks.get("net");
+        else if (l.contains("Doombringer"))
+            stack = materialHandler.removedItemStacks.get("doombringer");
         else		//all lower case! if not, it will kick it here!
         	stack = null;
         
