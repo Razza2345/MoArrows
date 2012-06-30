@@ -8,7 +8,10 @@ import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
+import com.gmail.l0g1clvl.MoArrows.MoArrows;
+
 public class TeleportArrowEffect implements ArrowEffect {
+	private MoArrows moArrows = MoArrows.moArrows;
 	
 	public void onEntityHitEvent(Arrow arrow, Entity target) {
 		
@@ -17,8 +20,7 @@ public class TeleportArrowEffect implements ArrowEffect {
 	public void onGroundHitEvent(Arrow arrow) {
 		Player player = (Player) arrow.getShooter();
 		
-		//Random r = new Random();
-		Location newLoc = arrow.getLocation();//.add(r.nextInt(5) - 2, r.nextInt(5) - 2, r.nextInt(5) - 2);
+		Location newLoc = arrow.getLocation();
 		Location tempLoc = newLoc;
 		while (!newLoc.getBlock().isEmpty() && newLoc.getY() < 127) {
 			newLoc.add(0, 1, 0);

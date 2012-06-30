@@ -12,16 +12,14 @@ import org.bukkit.event.Event;
 import com.gmail.l0g1clvl.MoArrows.MoArrows;
 
 public class PoisonArrowEffect implements ArrowEffect {
-	private MoArrows plugin;
+	private MoArrows moArrows = MoArrows.moArrows;
 	
 	public void onEntityHitEvent(Arrow arrow, Entity target) {
 		LivingEntity e = (LivingEntity) target;
-		e.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 200, 1));
+		e.addPotionEffect(new PotionEffect(PotionEffectType.POISON, moArrows.poisonSec, 1));
 	}
 
 	public void onGroundHitEvent(Arrow arrow) {
-		Player player = (Player) arrow.getShooter();
-		player.playEffect(arrow.getLocation(), Effect.POTION_BREAK, 4);
 	}
 		
 }

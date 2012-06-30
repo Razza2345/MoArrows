@@ -13,8 +13,7 @@ import org.bukkit.potion.PotionEffectType;
 import com.gmail.l0g1clvl.MoArrows.MoArrows;
 
 public class RazorArrowEffect implements ArrowEffect {
-
-private MoArrows plugin;
+	private MoArrows moArrows = MoArrows.moArrows;
 	
 	public void onEntityHitEvent(Arrow arrow, Entity target) {
 		

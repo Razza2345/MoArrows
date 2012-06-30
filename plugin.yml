@@ -1,53 +1,56 @@
 name: MoArrows
 main: com.gmail.l0g1clvl.MoArrows.MoArrows
 author: MrAverage
-version: 1.2.0
+version: 2.4.1
 permissions:
     moarrows.use.all:
-        default: op
-        description: Allows use of all arrow types
-    moarrows.use.normal:
-        default: true
-        description: Allows use of normal arrows
-    moarrows.use.explosive:
         default: false
+        description: Allows use of all arrow types
+    moarrows.bypassmaterials:
+        default: false
+        description: Eliminates material requirements for user
+    moarrows.bypasscooldowns:
+        default: false
+        description: Eliminates material requirements for user
+    moarrows.allowcrit:
+        default: true
+        description: Allows the user to have critical hits
+    moarrows.use.explosive:
+        default: true
+        description: Allows use of this special arrow
+    moarrows.use.compression:
+        default: true
         description: Allows use of this special arrow
     moarrows.use.lightning:
-        default: false
+        default: true
         description: Allows use of this special arrow
     moarrows.use.poison:
-        default: false
+        default: true
         description: Allows use of this special arrow
     moarrows.use.teleport:
         default: false
         description: Allows use of this special arrow
     moarrows.use.razor:
-        default: false
+        default: true
         description: Allows use of this special arrow
     moarrows.use.slow:
-        default: false
+        default: true
         description: Allows use of this special arrow
     moarrows.use.fire:
-        default: false
+        default: true
         description: Allows use of this special arrow
     moarrows.use.net:
-        default: false
+        default: true
         description: Allows use of this special arrow
     moarrows.use.doombringer:
         default: false
         description: Allows use of this special arrow
-    moarrows.free-fees:
-        default: false
-        description: Bypass iConomy fee cost
-    moarrows.free-materials:
+    moarrows.use.piercing:
+        default: true
+        description: Allows use of this special arrow
+    moarrows.reload:
         default: op
-        description: Bypass extra materials cost
-    moarrows.infinite:
-        default: false
-        description: Will not not consume arrows when firing
-    moarrows.set:
-        default: false
-        description: Allows setting temporary configuration values
+        description: Reloads the config file values
     moarrows.help:
         default: true
         description: Allows viewing MoArrows help
@@ -60,7 +63,7 @@ permissions:
 commands:
     moarrows:
         description: The main MoArrows command.
-        aliases: [ma]
-        usage: /moarrows <list|set|help> or /ma <list|set|help>
+        aliases: [moa]
+        usage: /moarrows <list|help>
         permission: moarrows.command
         permission-message: Sorry dude.. you can't use MoArrows commands.

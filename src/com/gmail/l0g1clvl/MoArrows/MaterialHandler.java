@@ -3,112 +3,126 @@ package com.gmail.l0g1clvl.MoArrows;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import com.gmail.l0g1clvl.MoArrows.arrows.ArrowType;
+import com.gmail.l0g1clvl.MoArrows.MoArrows.ArrowType;
 
 public class MaterialHandler {
-	MoArrows moArrows = new MoArrows();
-	public static Map<String, ItemStack[]> removedItemStacks;
-	private ItemStack tempStack[];
-	private ItemStack nullStack[];
-	private String stackArray[];
-
-	public MaterialHandler(MoArrows instance) {
-		this.moArrows = instance;
-		this.removedItemStacks = new HashMap<String, ItemStack[]>();
-		nullStack = new ItemStack[1];
-		nullStack[0] = new ItemStack(0, 0);
-		
-		tempStack = new ItemStack[10];
-		String s1 = moArrows.getConfig().getString("explosive-materials");
-		if (s1 != null) {
-			parseMaterial(s1, tempStack);
-			removedItemStacks.put("explosive", tempStack);
-		} else {
-			removedItemStacks.put("explosive", nullStack);
-		}
-		tempStack = new ItemStack[10];
-		s1 = moArrows.getConfig().getString("poison-materials");
-		if (s1 != null) {
-			parseMaterial(s1, tempStack);
-			removedItemStacks.put("poison", tempStack);
-		} else {
-			removedItemStacks.put("poison", nullStack);
-		}
-		tempStack = new ItemStack[10];
-		s1 = moArrows.getConfig().getString("lightning-materials");
-		if (s1 != null) {
-			parseMaterial(s1, tempStack);
-			removedItemStacks.put("lightning", tempStack);
-		} else {
-			removedItemStacks.put("lightning", nullStack);
-		}
-		tempStack = new ItemStack[10];
-		s1 = moArrows.getConfig().getString("teleport-materials");
-		if (s1 != null) {
-			parseMaterial(s1, tempStack);
-			removedItemStacks.put("teleport", tempStack);
-		} else {
-			removedItemStacks.put("teleport", nullStack);
-		}
-		tempStack = new ItemStack[10];
-		s1 = moArrows.getConfig().getString("razor-materials");
-		if (s1 != null) {
-			parseMaterial(s1, tempStack);
-			removedItemStacks.put("razor", tempStack);
-		} else {
-			removedItemStacks.put("razor", nullStack);
-		}
-		tempStack = new ItemStack[10];
-		s1 = moArrows.getConfig().getString("slow-materials");
-		if (s1 != null) {
-			parseMaterial(s1, tempStack);
-			removedItemStacks.put("slow", tempStack);
-		} else {
-			removedItemStacks.put("slow", nullStack);
-		}
-		tempStack = new ItemStack[10];
-		s1 = moArrows.getConfig().getString("fire-materials");
-		if (s1 != null) {
-			parseMaterial(s1, tempStack);
-			removedItemStacks.put("fire", tempStack);
-		} else {
-			removedItemStacks.put("fire", nullStack);
-		}
-		tempStack = new ItemStack[10];
-        s1 = moArrows.getConfig().getString("net-materials");
-        if (s1 != null) {
-            parseMaterial(s1, tempStack);
-            removedItemStacks.put("net", tempStack);
-        } else {
-            removedItemStacks.put("net", nullStack);
-        }
-        tempStack = new ItemStack[10];
-        s1 = moArrows.getConfig().getString("doombringer-materials");
-        if (s1 != null) {
-            parseMaterial(s1, tempStack);
-            removedItemStacks.put("doombringer", tempStack);
-        } else {
-            removedItemStacks.put("doombringer", nullStack);
-        }
-	}
+	private MoArrows moArrows = MoArrows.moArrows;
+	private Boolean hasDurability = false;
+	private Boolean hasMaterials = true;
 	
-	private void parseMaterial(String input, ItemStack tempStack[]) {
-		try {
-			stackArray = new String[20];
-			String delim = "[:,]+";
-			stackArray = input.split(delim);
-			int arrayIndex = 0;
-			for (int z = 0; z < stackArray.length; z+=2) {
-					tempStack[arrayIndex] = new ItemStack(Integer.parseInt(stackArray[z]), Integer.parseInt(stackArray[z+1]));
-					arrayIndex++;
-			}
-		}
-		catch (Exception e) {
-			moArrows.log.warning("[MoArrows] Error parsing material requirements!");
-			moArrows.log.warning("[MoArrows] Please review your config file.");
-		}
+	private ItemStack nullStack[];
+	
+public boolean removeMaterials(Player player) {
+		
+	Inventory inventory = player.getInventory();
+    ItemStack[] stack = new ItemStack[10];
+    
+    if (player.hasPermission("moarrows.bypassmaterials")) return true;
+    
+    stack = null;
+    stack = moArrows.removedItemStacks.get(moArrows.activeArrowType.get(player).toString().toLowerCase());
+    
+    if (stack[0].getTypeId() != 0) {
+    
+        //get stack size	
+        int len = 0;
+        for (int y = 0; y < stack.length; y++) {
+        	if (stack[y] != null) {
+        		len++;
+        	} 
+        }
+        
+        // Check for all the right materials..
+        hasMaterials = true;
+        hasDurability = false;
+        for (int u = 0; u < len; u++) {
+        	int itemType = stack[u].getTypeId();
+        	int itemAmount = stack[u].getAmount();
+        	short itemDurability = stack[u].getDurability();
+        	
+        	if (!inventory.contains(itemType, itemAmount)) {
+        		hasMaterials = false;
+        		return false;
+        	} else {
+        		ItemStack[] stack2 = inventory.getContents();
+	        	for (ItemStack stak : stack2) {
+	        		if (stak != null) {
+		        		if (stak.getTypeId() == itemType && stak.getDurability() == itemDurability && stak.getAmount() >= itemAmount) {
+		        			hasDurability = true;
+	        				break;
+		        		}
+	        		}
+	        	}
+	        	if (!hasDurability) hasMaterials = false;
+        	}
+        }
+        if (!hasMaterials && !player.hasPermission("moarrows.bypassmaterials")) {
+        	player.sendMessage(ChatColor.RED + "You dont have enough materials for that type of arrow!");
+        	return false;
+        } else {
+        	if (!player.hasPermission("moarrows.bypassmaterials")) {
+        		for (int k = 0; k < len; k++) {
+		        	inventory.removeItem(stack[k]);
+		        }
+        	} 
+        	return true;
+        }
+    } else return true;
 	}
+
+	public boolean hasMaterials(Player player) {
+		
+		if (player.hasPermission("moarrows.bypassmaterials")) return true;
+		
+		Inventory inventory = player.getInventory();
+	    ItemStack[] stack = new ItemStack[10];
+	    
+	    stack = null;
+	    stack = moArrows.removedItemStacks.get(moArrows.activeArrowType.get(player).toString().toLowerCase());
+	    
+	    if (stack[0].getTypeId() != 0) {
+	    
+	        //get stack size	
+	        int len = 0;
+	        for (int y = 0; y < stack.length; y++) {
+	        	if (stack[y] != null) {
+	        		len++;
+	        	} 
+	        }
+	        
+	        // Check for all the right materials..
+	        hasMaterials = true;
+	        hasDurability = false;
+	        for (int u = 0; u < len; u++) {
+	        	int itemType = stack[u].getTypeId();
+	        	int itemAmount = stack[u].getAmount();
+	        	short itemDurability = stack[u].getDurability();
+	        	
+	        	if (!inventory.contains(itemType, itemAmount)) {
+	        		hasMaterials = false;
+	        		return false;
+	        	} else {
+	        		ItemStack[] stack2 = inventory.getContents();
+		        	for (ItemStack stak : stack2) {
+		        		if (stak != null) {
+			        		if (stak.getTypeId() == itemType && stak.getDurability() == itemDurability && stak.getAmount() >= itemAmount) {
+			        			hasDurability = true;
+		        				break;
+			        		}
+		        		}
+		        	}
+		        	if (!hasDurability) hasMaterials = false;
+	        	}
+	        }
+	        return hasMaterials;
+	    } else return true;
+	
+	}
+
 }

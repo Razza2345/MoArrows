@@ -11,16 +11,14 @@ import org.bukkit.potion.PotionEffectType;
 import com.gmail.l0g1clvl.MoArrows.MoArrows;
 
 public class SlowArrowEffect implements ArrowEffect {
-	private MoArrows plugin;
+	private MoArrows moArrows = MoArrows.moArrows;
 	
 	public void onEntityHitEvent(Arrow arrow, Entity target) {
 		LivingEntity e = (LivingEntity) target;
-		e.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 400, 4));
+		e.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, moArrows.slowSec, 4));
 	}
 
 	public void onGroundHitEvent(Arrow arrow) {
-		Player player = (Player) arrow.getShooter();
-		player.playEffect(arrow.getLocation(), Effect.POTION_BREAK, 5);
 	}
 	
 }

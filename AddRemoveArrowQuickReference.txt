@@ -11,7 +11,7 @@ The following steps are required for adding and removing arrows:
 - MoArrowsPlayerListener
     - add:
         else if (l.contains("[NAME]"))
-            stack = materialHandler.removedItemStacks.get("[NAME]"); 
+            stack = moArrows.removedItemStacks.get("[NAME]"); 
     
 - MaterialHandler.java
     - add:
@@ -19,9 +19,9 @@ The following steps are required for adding and removing arrows:
         s1 = moArrows.getConfig().getString("[NAME]-materials");
         if (s1 != null) {
             parseMaterial(s1, tempStack);
-            removedItemStacks.put("[NAME]", tempStack);
+            moArrows.removedItemStacks.put("[NAME]", tempStack);
         } else {
-            removedItemStacks.put("[NAME]", nullStack);
+            moArrows.removedItemStacks.put("[NAME]", nullStack);
         }
     
 - plugin.yml
