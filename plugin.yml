@@ -13,19 +13,19 @@ permissions:
         default: false
         description: Eliminates material requirements for user
     moarrows.allowcrit:
-        default: true
+        default: false
         description: Allows the user to have critical hits
     moarrows.use.explosive:
-        default: true
+        default: false
         description: Allows use of this special arrow
     moarrows.use.compression:
-        default: true
+        default: false
         description: Allows use of this special arrow
     moarrows.use.lightning:
-        default: true
+        default: false
         description: Allows use of this special arrow
     moarrows.use.poison:
-        default: true
+        default: false
         description: Allows use of this special arrow
     moarrows.use.teleport:
         default: false
@@ -34,31 +34,31 @@ permissions:
         default: true
         description: Allows use of this special arrow
     moarrows.use.slow:
-        default: true
+        default: false
         description: Allows use of this special arrow
     moarrows.use.fire:
-        default: true
+        default: false
         description: Allows use of this special arrow
     moarrows.use.net:
-        default: true
+        default: false
         description: Allows use of this special arrow
     moarrows.use.doombringer:
         default: false
         description: Allows use of this special arrow
     moarrows.use.piercing:
-        default: true
+        default: false
         description: Allows use of this special arrow
     moarrows.reload:
         default: op
         description: Reloads the config file values
     moarrows.help:
-        default: true
+        default: false
         description: Allows viewing MoArrows help
     moarrows.list:
-        default: true
+        default: false
         description: Allows listing configuration values
     moarrows.command:
-        default: true
+        default: false
         description: Allows use of MoArrows command interface
 commands:
     moarrows:
